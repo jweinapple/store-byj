@@ -20,6 +20,9 @@
     },
     "api/stripe-publishable-key.js": {
       "maxDuration": 10
+    },
+    "api/health.js": {
+      "maxDuration": 10
     }
   },
   "headers": [
