@@ -49,7 +49,8 @@ export default async function handler(req, res) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { error } = await supabase.from('products').select('id').limit(1);
+    // Test database connection by querying the orders table
+    const { error } = await supabase.from('orders').select('id').limit(1);
     if (error) throw error;
 
     return res.status(200).json({ 

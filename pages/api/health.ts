@@ -13,7 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
-    const { error } = await supabase.from('products').select('id').limit(1)
+    // Test database connection by querying the orders table
+    const { error } = await supabase.from('orders').select('id').limit(1)
     if (error) throw error
 
     return res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
