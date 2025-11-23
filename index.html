@@ -243,9 +243,7 @@
                     <a href="#discography" class="hover:text-purple-400 transition-colors font-medium">Discography</a>
                     <a href="#about" class="hover:text-purple-400 transition-colors font-medium">About</a>
                     <a href="merch.html" class="hover:text-purple-400 transition-colors font-medium">Merch</a>
-                    <a href="#connect" class="magnetic-button bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-8 py-3 rounded-full transition-all font-bold">
-                        Connect
-                    </a>
+                    <a href="merch-designer.html" class="hover:text-purple-400 transition-colors font-medium">Merch Designer</a>
                 </div>
                 <!-- Mobile menu button -->
                 <button class="md:hidden text-white" id="mobile-menu-btn">
@@ -259,7 +257,7 @@
                     <a href="#discography" class="block text-white hover:text-purple-400 transition py-3 text-lg">Discography</a>
                     <a href="#about" class="block text-white hover:text-purple-400 transition py-3 text-lg">About</a>
                     <a href="merch.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch</a>
-                    <a href="#connect" class="block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full transition text-center font-bold">Connect</a>
+                    <a href="merch-designer.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch Designer</a>
                 </div>
             </div>
         </div>
@@ -293,9 +291,20 @@
                     byJ.
                 </h1>
                 <p class="text-4xl md:text-5xl text-purple-300 font-light mb-4">Sound Recycler</p>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
                     Transforming forgotten sounds into modern sonic experiences
                 </p>
+                <!-- Hero CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+                    <a href="merch-designer.html" class="inline-flex items-center bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-full transition-all shadow-lg hover:shadow-pink-500/50 fade-in" style="animation-delay: 0.3s;">
+                        <i class="fas fa-palette mr-2"></i>
+                        Design Your Own
+                    </a>
+                    <a href="printful-api-designer.html" class="inline-flex items-center bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-8 rounded-full transition-all shadow-lg hover:shadow-blue-500/50 fade-in" style="animation-delay: 0.4s;">
+                        <i class="fas fa-magic mr-2"></i>
+                        Printful Designer
+                    </a>
+                </div>
             </div>
 
             <!-- Main Content Grid -->
@@ -316,20 +325,20 @@
                     </div>
                     
                     <!-- Streaming Links -->
-                    <div class="flex justify-center space-x-4">
+                    <div class="flex justify-center items-center space-x-3">
                         <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws?si=91Ff7vFWQMSkD2h9km0f1w" target="_blank" class="group">
-                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-green-500/50 transition-all">
-                                <i class="fab fa-spotify text-3xl text-white"></i>
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-green-500/50 transition-all">
+                                <i class="fab fa-spotify text-xl text-white"></i>
                             </div>
                         </a>
                         <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="group">
-                            <div class="w-16 h-16 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-2xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-pink-500/50 transition-all">
-                                <i class="fab fa-apple text-3xl text-white"></i>
+                            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-pink-500/50 transition-all">
+                                <i class="fab fa-apple text-xl text-white"></i>
                             </div>
                         </a>
                         <a href="https://www.instagram.com/producedbyj/" target="_blank" class="group">
-                            <div class="w-16 h-16 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-2xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-purple-500/50 transition-all">
-                                <i class="fab fa-instagram text-3xl text-white"></i>
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-purple-500/50 transition-all">
+                                <i class="fab fa-instagram text-xl text-white"></i>
                             </div>
                         </a>
                     </div>
@@ -401,13 +410,6 @@
                 </div>
             </div>
 
-            <!-- Call to Action -->
-            <div class="text-center mt-20 reveal-on-scroll" style="animation-delay: 0.4s;">
-                <a href="#about" class="magnetic-button inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-500 hover:via-pink-500 hover:to-blue-500 text-white font-bold py-5 px-12 rounded-full transition-all text-lg shadow-2xl shadow-purple-500/50">
-                    Discover My Story
-                    <i class="fas fa-arrow-down ml-2"></i>
-                </a>
-            </div>
         </div>
 
         <!-- Scroll Indicator -->
@@ -456,7 +458,7 @@
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-5xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-6xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                         About byJ.
                     </h2>
                     <div class="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
@@ -485,50 +487,6 @@
                         </p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Connect Section -->
-    <section id="connect" class="py-20 bg-gradient-to-b from-black to-purple-900">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-6xl font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    Let's Connect
-                </h2>
-                <div class="h-1 w-32 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mx-auto rounded-full"></div>
-                <p class="text-xl text-gray-300 mt-6 max-w-2xl mx-auto">
-                    Follow the journey, stay updated with new releases, and be part of the sound recycling movement
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <a href="https://www.instagram.com/producedbyj/" target="_blank" class="glass-effect rounded-3xl p-10 hover-lift neon-border group text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        <i class="fab fa-instagram text-4xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold mb-3 text-white">Instagram</h3>
-                    <p class="text-gray-400 mb-4 text-lg">Behind the scenes & updates</p>
-                    <span class="text-purple-400 font-bold text-xl">@producedbyj</span>
-                </a>
-                
-                <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws?si=91Ff7vFWQMSkD2h9km0f1w" target="_blank" class="glass-effect rounded-3xl p-10 hover-lift neon-border group text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        <i class="fab fa-spotify text-4xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold mb-3 text-white">Spotify</h3>
-                    <p class="text-gray-400 mb-4 text-lg">Stream the full catalog</p>
-                    <span class="text-green-400 font-bold text-xl">30M+ Streams</span>
-                </a>
-
-                <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="glass-effect rounded-3xl p-10 hover-lift neon-border group text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        <i class="fab fa-apple text-4xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-bold mb-3 text-white">Apple Music</h3>
-                    <p class="text-gray-400 mb-4 text-lg">Listen on Apple Music</p>
-                    <span class="text-pink-400 font-bold text-xl">Stream Now</span>
-                </a>
             </div>
         </div>
     </section>

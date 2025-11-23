@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Your Product - byJ.</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    <link rel="apple-touch-icon" href="images/other/DSC_4582.jpeg">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Printful Embedded Design Maker SDK -->
+    <script src="https://cdn.printful.com/edm/v1/edm.js"></script>
+    
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        #designer-container {
+            min-height: 600px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-2xl font-bold tracking-tight">byJ.</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="hover:text-purple-400 transition">Home</a>
+                    <a href="merch.html" class="hover:text-purple-400 transition">Merch</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-gray-900 to-purple-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 fade-in">Design Your Product</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s;">
+                Create custom designs for your merchandise using Printful's design tool
+            </p>
+        </div>
+    </section>
+
+    <!-- Product Selection -->
+    <section class="py-8">
+        <div class="container mx-auto px-6">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Select Product</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <select id="product-select" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Loading products...</option>
+                    </select>
+                    <select id="variant-select" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" disabled>
+                        <option value="">Select product first</option>
+                    </select>
+                    <button id="start-designer-btn" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-2 px-6 rounded-lg transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-palette mr-2"></i>Start Designing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Designer Container -->
+    <section class="py-8">
+        <div class="container mx-auto px-6">
+            <div id="designer-container" class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex flex-col items-center justify-center h-96">
+                    <div class="loading-spinner mb-4"></div>
+                    <p class="text-gray-600">Select a product and variant to start designing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Info & Actions -->
+    <section class="py-8" id="design-actions" style="display: none;">
+        <div class="container mx-auto px-6">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Your Design</h2>
+                <div id="design-preview" class="mb-4"></div>
+                <div class="flex gap-4">
+                    <button id="add-to-cart-btn" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-lg">
+                        <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                    </button>
+                    <button id="download-design-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition">
+                        <i class="fas fa-download mr-2"></i>Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-xl font-bold mb-4">byJ.</h3>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws" target="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-spotify"></i></a>
+                <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-apple"></i></a>
+                <a href="https://www.instagram.com/producedbyj" target="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-gray-400">&copy; 2025 byJ. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentNonce = null;
+        let currentDesign = null;
+        let currentProduct = null;
+        let currentVariant = null;
+        let designerInstance = null;
+
+        // Load products on page load
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/printful-products');
+                const data = await response.json();
+                
+                if (data.success && data.products && Array.isArray(data.products)) {
+                    const productSelect = document.getElementById('product-select');
+                    productSelect.innerHTML = '<option value="">Select a product...</option>';
+                    
+                    data.products.forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.id;
+                        // Use display_name instead of name, and brand as type
+                        const productName = product.display_name || product.name || 'Unknown Product';
+                        const productType = product.brand || 'Generic';
+                        option.textContent = `${productName} (${productType})`;
+                        option.dataset.product = JSON.stringify(product);
+                        productSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Invalid products data:', data);
+                    document.getElementById('product-select').innerHTML = '<option value="">Error loading products</option>';
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('product-select').innerHTML = '<option value="">Error loading products</option>';
+            }
+        }
+
+        // Load variants when product is selected
+        document.getElementById('product-select').addEventListener('change', async function() {
+            const productId = this.value;
+            const variantSelect = document.getElementById('variant-select');
+            const startBtn = document.getElementById('start-designer-btn');
+            
+            if (!productId) {
+                variantSelect.innerHTML = '<option value="">Select product first</option>';
+                variantSelect.disabled = true;
+                startBtn.disabled = true;
+                return;
+            }
+            
+            try {
+                variantSelect.innerHTML = '<option value="">Loading variants...</option>';
+                variantSelect.disabled = true;
+                
+                const response = await fetch(`/api/printful-products?product_id=${productId}`);
+                const data = await response.json();
+                
+                if (data.success && data.product) {
+                    // V1 API returns product in result, handle both structures
+                    const productData = data.product;
+                    currentProduct = productData;
+                    variantSelect.innerHTML = '<option value="">Select a variant...</option>';
+                    
+                    // Printful catalog API doesn't return variants - variants are selected in the designer
+                    // Create a default variant option so the designer can be launched
+                    // The designer will handle actual variant selection (size, color, etc.)
+                    const option = document.createElement('option');
+                    option.value = productData.id;
+                    option.textContent = `Default - $${productData.price || 'N/A'}`;
+                    option.dataset.variant = JSON.stringify({
+                        id: productData.id,
+                        product_id: productData.id,
+                        name: productData.display_name || productData.name,
+                        price: productData.price,
+                        currency: productData.currency || 'USD'
+                    });
+                    variantSelect.appendChild(option);
+                    variantSelect.disabled = false;
+                    
+                    console.log('Product loaded (variants will be selected in designer):', productData);
+                }
+            } catch (error) {
+                console.error('Error loading variants:', error);
+                variantSelect.innerHTML = '<option value="">Error loading variants</option>';
+            }
+        });
+
+        // Start designer when variant is selected
+        document.getElementById('variant-select').addEventListener('change', function() {
+            const variantId = this.value;
+            const startBtn = document.getElementById('start-designer-btn');
+            startBtn.disabled = !variantId;
+            
+            if (variantId) {
+                const option = this.options[this.selectedIndex];
+                currentVariant = JSON.parse(option.dataset.variant);
+            }
+        });
+
+        // Generate nonce and start designer
+        document.getElementById('start-designer-btn').addEventListener('click', async function() {
+            if (!currentVariant || !currentProduct) {
+                alert('Please select a product and variant');
+                return;
+            }
+            
+            const container = document.getElementById('designer-container');
+            container.innerHTML = '<div class="flex flex-col items-center justify-center h-96"><div class="loading-spinner mb-4"></div><p class="text-gray-600">Initializing designer...</p></div>';
+            
+            try {
+                // Generate nonce token
+                const nonceResponse = await fetch('/api/printful-designer-nonce', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        external_product_id: `product_${currentProduct.id}_variant_${currentVariant.id}`,
+                        external_customer_id: getOrCreateCustomerId()
+                    })
+                });
+                
+                const nonceData = await nonceResponse.json();
+                
+                if (!nonceResponse.ok) {
+                    // Check if it's an access issue
+                    const showAccessInfo = nonceData.requiresAccess || false;
+                    const errorMessage = nonceData.message || nonceData.error || 'Failed to generate nonce';
+                    
+                    container.innerHTML = `
+                        <div class="flex flex-col items-center justify-center h-96 max-w-2xl mx-auto p-8">
+                            <p class="text-red-600 mb-4 text-lg font-semibold">Error: ${errorMessage}</p>
+                            ${showAccessInfo ? `
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-4 text-left">
+                                    <h3 class="font-semibold text-yellow-800 mb-2">Access Required</h3>
+                                    <p class="text-yellow-700 text-sm mb-3">
+                                        The Printful Embedded Design Maker requires special enterprise access. 
+                                        This feature is not available with standard API access.
+                                    </p>
+                                    <ul class="text-yellow-700 text-sm list-disc list-inside mb-4 space-y-1">
+                                        <li>Request access at: <a href="https://developers.printful.com/docs/edm/" target="_blank" class="underline">Printful EDM Documentation</a></li>
+                                        <li>Contact Printful support for enterprise access</li>
+                                        <li>Your OAuth token needs "Embedded Design Maker" extension enabled</li>
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            <button onclick="location.reload()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Retry</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                if (nonceData.success && nonceData.nonce) {
+                    currentNonce = nonceData.nonce;
+                    initializeDesigner(nonceData.nonce, currentVariant.id);
+                } else {
+                    throw new Error(nonceData.error || nonceData.message || 'Failed to generate nonce');
+                }
+            } catch (error) {
+                console.error('Error starting designer:', error);
+                
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-96 max-w-2xl mx-auto p-8">
+                        <p class="text-red-600 mb-4 text-lg font-semibold">Error: ${error.message}</p>
+                        <button onclick="location.reload()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Retry</button>
+                    </div>
+                `;
+            }
+        });
+
+        // Initialize Printful Embedded Design Maker
+        function initializeDesigner(nonce, variantId) {
+            const container = document.getElementById('designer-container');
+            
+            // Wait for Printful EDM SDK to load
+            if (typeof PrintfulEDM === 'undefined') {
+                // Retry after a short delay
+                setTimeout(() => {
+                    if (typeof PrintfulEDM !== 'undefined') {
+                        initializeDesigner(nonce, variantId);
+                    } else {
+                        container.innerHTML = `
+                            <div class="flex flex-col items-center justify-center h-96">
+                                <p class="text-red-600 mb-4">Printful Designer SDK not loaded.</p>
+                                <p class="text-sm text-gray-600">Make sure you have access to Printful Embedded Design Maker.</p>
+                                <p class="text-xs text-gray-500 mt-2">Note: EDM requires special access from Printful.</p>
+                            </div>
+                        `;
+                    }
+                }, 1000);
+                return;
+            }
+            
+            try {
+                // Clear container
+                container.innerHTML = '';
+                
+                // Initialize the designer
+                designerInstance = PrintfulEDM.init({
+                    nonce: nonce,
+                    variantId: parseInt(variantId),
+                    container: container,
+                    onDesignReady: function(design) {
+                        console.log('Design ready:', design);
+                        currentDesign = design;
+                        showDesignActions(design);
+                    },
+                    onDesignChange: function(design) {
+                        console.log('Design changed:', design);
+                        currentDesign = design;
+                    },
+                    onError: function(error) {
+                        console.error('Designer error:', error);
+                        container.innerHTML = `
+                            <div class="flex flex-col items-center justify-center h-96">
+                                <p class="text-red-600 mb-2">Designer error: ${error.message || 'Unknown error'}</p>
+                                <p class="text-sm text-gray-600">Please try selecting a different product or contact support.</p>
+                            </div>
+                        `;
+                    }
+                });
+            } catch (error) {
+                console.error('Error initializing designer:', error);
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-96">
+                        <p class="text-red-600 mb-2">Error initializing designer: ${error.message}</p>
+                        <button onclick="location.reload()" class="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Show design actions when design is ready
+        function showDesignActions(design) {
+            const actionsSection = document.getElementById('design-actions');
+            const previewDiv = document.getElementById('design-preview');
+            
+            actionsSection.style.display = 'block';
+            previewDiv.innerHTML = `
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-2">Design created successfully!</p>
+                    <p class="text-xs text-gray-500">Design ID: ${design.id || 'N/A'}</p>
+                </div>
+            `;
+        }
+
+        // Get or create customer ID (stored in localStorage)
+        function getOrCreateCustomerId() {
+            let customerId = localStorage.getItem('printful_customer_id');
+            if (!customerId) {
+                customerId = 'customer_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('printful_customer_id', customerId);
+            }
+            return customerId;
+        }
+
+        // Add to cart
+        document.getElementById('add-to-cart-btn').addEventListener('click', async function() {
+            if (!currentDesign || !currentVariant) {
+                alert('No design available. Please create a design first.');
+                return;
+            }
+            
+            try {
+                // Get design data using nonce
+                const designResponse = await fetch(`/api/printful-designer-nonce?nonce=${currentNonce}`);
+                const designData = await designResponse.json();
+                
+                if (designData.success && designData.design) {
+                    // Add to cart (you'll need to integrate with your existing cart system)
+                    const cartItem = {
+                        id: `printful-${currentVariant.id}-${Date.now()}`,
+                        name: `${currentProduct.name} - Custom Design`,
+                        price: parseFloat(currentVariant.price),
+                        size: currentVariant.size || 'M',
+                        quantity: 1,
+                        variant_id: currentVariant.id,
+                        design: designData.design,
+                        nonce: currentNonce
+                    };
+                    
+                    // Get existing cart from localStorage
+                    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                    cart.push(cartItem);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    alert('Design added to cart!');
+                    window.location.href = 'merch.html';
+                } else {
+                    throw new Error('Failed to retrieve design data');
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Error adding design to cart. Please try again.');
+            }
+        });
+
+        // Download design
+        document.getElementById('download-design-btn').addEventListener('click', function() {
+            if (!currentDesign) {
+                alert('No design available to download.');
+                return;
+            }
+            
+            // You can implement design download functionality here
+            alert('Download functionality coming soon!');
+        });
+
+        // Initialize on page load
+        loadProducts();
+    </script>
+</body>
+</html>
+

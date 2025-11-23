@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merch Designer - byJ.</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    <link rel="apple-touch-icon" href="images/other/DSC_4582.jpeg">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fabric.js for canvas manipulation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        #canvas-container {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: #f9fafb;
+            position: relative;
+        }
+        
+        .toolbar-btn {
+            transition: all 0.2s;
+        }
+        .toolbar-btn:hover {
+            transform: translateY(-2px);
+        }
+        .toolbar-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .product-template {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .product-template:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+        .product-template.selected {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-black text-white py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="text-2xl font-bold">
+                    byJ<span class="text-purple-400">.</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="hover:text-purple-400 transition-colors font-medium">Home</a>
+                    <a href="merch.html" class="hover:text-purple-400 transition-colors font-medium">Merch</a>
+                </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800 hidden">
+                <div class="container mx-auto px-6 py-6 space-y-4">
+                    <a href="index.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Home</a>
+                    <a href="merch.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-purple-900 via-purple-800 to-purple-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 fade-in">Merch Designer</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s;">
+                Create custom designs for your merchandise
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Sidebar - Tools & Options -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Product Selection -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-4">Select Product</h2>
+                    <select id="product-select" class="w-full px-4 py-2 border rounded-lg mb-4">
+                        <option value="">Loading products...</option>
+                    </select>
+                    <select id="variant-select" class="w-full px-4 py-2 border rounded-lg mb-4" disabled>
+                        <option value="">Select product first</option>
+                    </select>
+                </div>
+
+                <!-- Design Tools -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-4">Design Tools</h2>
+                    
+                    <!-- Text Tool -->
+                    <button id="add-text-btn" class="toolbar-btn w-full mb-3 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-left">
+                        <i class="fas fa-font mr-2"></i> Add Text
+                    </button>
+                    
+                    <!-- Image Upload -->
+                    <label for="image-upload" class="toolbar-btn w-full mb-3 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-left cursor-pointer block">
+                        <i class="fas fa-image mr-2"></i> Upload Image
+                        <input type="file" id="image-upload" accept="image/*" class="hidden">
+                    </label>
+                    
+                    <!-- Color Picker -->
+                    <div class="mb-3">
+                        <label class="block text-sm font-semibold mb-2">Text Color</label>
+                        <input type="color" id="text-color" value="#000000" class="w-full h-10 rounded-lg border">
+                    </div>
+                    
+                    <!-- Font Size -->
+                    <div class="mb-3">
+                        <label class="block text-sm font-semibold mb-2">Font Size</label>
+                        <input type="range" id="font-size" min="12" max="100" value="24" class="w-full">
+                        <span id="font-size-value" class="text-sm text-gray-600">24px</span>
+                    </div>
+                    
+                    <!-- Font Family -->
+                    <div class="mb-3">
+                        <label class="block text-sm font-semibold mb-2">Font Family</label>
+                        <select id="font-family" class="w-full px-4 py-2 border rounded-lg">
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Clear Canvas -->
+                    <button id="clear-canvas-btn" class="w-full mb-3 px-4 py-3 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg">
+                        <i class="fas fa-trash mr-2"></i> Clear All
+                    </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-bold mb-4">Actions</h2>
+                    <button id="save-design-btn" class="w-full mb-3 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg">
+                        <i class="fas fa-save mr-2"></i> Save Design
+                    </button>
+                    <button id="add-to-cart-btn" class="w-full mb-3 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg">
+                        <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+                    </button>
+                    <button id="download-design-btn" class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                        <i class="fas fa-download mr-2"></i> Download Design
+                    </button>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Design Canvas</h2>
+                        <div class="flex gap-2">
+                            <button id="zoom-in-btn" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                            <button id="zoom-out-btn" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <button id="reset-zoom-btn" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="canvas-container" class="w-full flex justify-center items-center" style="min-height: 600px;">
+                        <canvas id="design-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Fabric.js canvas
+        let canvas;
+        let currentProduct = null;
+        let currentVariant = null;
+        let currentZoom = 1;
+
+        // Initialize canvas
+        function initCanvas() {
+            canvas = new fabric.Canvas('design-canvas', {
+                width: 600,
+                height: 600,
+                backgroundColor: '#ffffff'
+            });
+
+            // Load product template when product is selected
+            canvas.on('object:added', function(e) {
+                console.log('Object added to canvas');
+            });
+
+            canvas.on('object:modified', function(e) {
+                console.log('Object modified');
+            });
+        }
+
+        // Load products from Printful API
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/printful-products');
+                const data = await response.json();
+                
+                if (data.success && data.products) {
+                    const productSelect = document.getElementById('product-select');
+                    productSelect.innerHTML = '<option value="">Select a product...</option>';
+                    
+                    data.products.forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.id;
+                        const productName = product.display_name || product.name || 'Unknown Product';
+                        const productType = product.brand || 'Generic';
+                        option.textContent = `${productName} (${productType})`;
+                        option.dataset.product = JSON.stringify(product);
+                        productSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // Load product variants
+        document.getElementById('product-select').addEventListener('change', async function() {
+            const productId = this.value;
+            const variantSelect = document.getElementById('variant-select');
+            
+            if (!productId) {
+                variantSelect.innerHTML = '<option value="">Select product first</option>';
+                variantSelect.disabled = true;
+                return;
+            }
+            
+            try {
+                variantSelect.innerHTML = '<option value="">Loading variants...</option>';
+                variantSelect.disabled = true;
+                
+                const response = await fetch(`/api/printful-products?product_id=${productId}`);
+                const data = await response.json();
+                
+                if (data.success && data.product) {
+                    const productData = data.product;
+                    currentProduct = productData;
+                    
+                    // Create default variant option
+                    const option = document.createElement('option');
+                    option.value = productData.id;
+                    option.textContent = `Default - $${productData.price || 'N/A'}`;
+                    option.dataset.variant = JSON.stringify({
+                        id: productData.id,
+                        product_id: productData.id,
+                        name: productData.display_name || productData.name,
+                        price: productData.price
+                    });
+                    variantSelect.appendChild(option);
+                    variantSelect.disabled = false;
+                    
+                    // Load product image as canvas background
+                    if (productData.image_url) {
+                        loadProductTemplate(productData.image_url);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading variants:', error);
+            }
+        });
+
+        // Load product template image
+        function loadProductTemplate(imageUrl) {
+            fabric.Image.fromURL(imageUrl, function(img) {
+                // Scale image to fit canvas
+                const scale = Math.min(
+                    canvas.width / img.width,
+                    canvas.height / img.height
+                );
+                img.scale(scale);
+                img.set({
+                    left: (canvas.width - img.width * scale) / 2,
+                    top: (canvas.height - img.height * scale) / 2,
+                    selectable: false,
+                    evented: false
+                });
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+            });
+        }
+
+        // Add text to canvas
+        document.getElementById('add-text-btn').addEventListener('click', function() {
+            const text = new fabric.Text('Your Text Here', {
+                left: canvas.width / 2,
+                top: canvas.height / 2,
+                fontSize: parseInt(document.getElementById('font-size').value),
+                fontFamily: document.getElementById('font-family').value,
+                fill: document.getElementById('text-color').value,
+                originX: 'center',
+                originY: 'center'
+            });
+            canvas.add(text);
+            canvas.setActiveObject(text);
+            canvas.renderAll();
+        });
+
+        // Upload image
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    fabric.Image.fromURL(event.target.result, function(img) {
+                        // Scale image to fit canvas better
+                        const maxWidth = canvas.width * 0.8;
+                        const maxHeight = canvas.height * 0.8;
+                        const scale = Math.min(maxWidth / img.width, maxHeight / img.height, 1);
+                        img.scale(scale);
+                        img.set({
+                            left: canvas.width / 2,
+                            top: canvas.height / 2,
+                            originX: 'center',
+                            originY: 'center'
+                        });
+                        canvas.add(img);
+                        canvas.setActiveObject(img);
+                        canvas.renderAll();
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update text properties when object is selected
+        canvas.on('selection:created', function(e) {
+            const obj = e.selected[0];
+            if (obj.type === 'text' || obj.type === 'i-text') {
+                document.getElementById('text-color').value = obj.fill;
+                document.getElementById('font-size').value = obj.fontSize;
+                document.getElementById('font-size-value').textContent = obj.fontSize + 'px';
+                document.getElementById('font-family').value = obj.fontFamily;
+            }
+        });
+
+        canvas.on('selection:updated', function(e) {
+            const obj = e.selected[0];
+            if (obj.type === 'text' || obj.type === 'i-text') {
+                document.getElementById('text-color').value = obj.fill;
+                document.getElementById('font-size').value = obj.fontSize;
+                document.getElementById('font-size-value').textContent = obj.fontSize + 'px';
+                document.getElementById('font-family').value = obj.fontFamily;
+            }
+        });
+
+        // Update text color
+        document.getElementById('text-color').addEventListener('change', function(e) {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
+                activeObject.set('fill', e.target.value);
+                canvas.renderAll();
+            }
+        });
+
+        // Update font size
+        document.getElementById('font-size').addEventListener('input', function(e) {
+            const size = parseInt(e.target.value);
+            document.getElementById('font-size-value').textContent = size + 'px';
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
+                activeObject.set('fontSize', size);
+                canvas.renderAll();
+            }
+        });
+
+        // Update font family
+        document.getElementById('font-family').addEventListener('change', function(e) {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
+                activeObject.set('fontFamily', e.target.value);
+                canvas.renderAll();
+            }
+        });
+
+        // Clear canvas
+        document.getElementById('clear-canvas-btn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear the canvas?')) {
+                canvas.clear();
+                if (currentProduct && currentProduct.image_url) {
+                    loadProductTemplate(currentProduct.image_url);
+                } else {
+                    canvas.backgroundColor = '#ffffff';
+                    canvas.renderAll();
+                }
+            }
+        });
+
+        // Zoom controls
+        document.getElementById('zoom-in-btn').addEventListener('click', function() {
+            currentZoom = Math.min(currentZoom + 0.1, 2);
+            canvas.setZoom(currentZoom);
+        });
+
+        document.getElementById('zoom-out-btn').addEventListener('click', function() {
+            currentZoom = Math.max(currentZoom - 0.1, 0.5);
+            canvas.setZoom(currentZoom);
+        });
+
+        document.getElementById('reset-zoom-btn').addEventListener('click', function() {
+            currentZoom = 1;
+            canvas.setZoom(1);
+            canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
+        });
+
+        // Save design
+        document.getElementById('save-design-btn').addEventListener('click', function() {
+            const designData = canvas.toJSON();
+            localStorage.setItem('merch_design_' + Date.now(), JSON.stringify(designData));
+            alert('Design saved!');
+        });
+
+        // Download design
+        document.getElementById('download-design-btn').addEventListener('click', function() {
+            const dataURL = canvas.toDataURL({
+                format: 'png',
+                quality: 1
+            });
+            const link = document.createElement('a');
+            link.download = 'merch-design-' + Date.now() + '.png';
+            link.href = dataURL;
+            link.click();
+        });
+
+        // Add to cart
+        document.getElementById('add-to-cart-btn').addEventListener('click', function() {
+            if (!currentProduct || !currentVariant) {
+                alert('Please select a product and variant first');
+                return;
+            }
+
+            const designData = canvas.toDataURL('png');
+            const cartItem = {
+                id: 'custom_' + Date.now(),
+                name: currentProduct.display_name || currentProduct.name,
+                price: currentProduct.price || 0,
+                quantity: 1,
+                image: designData,
+                productId: currentProduct.id,
+                variantId: currentVariant.id,
+                isCustom: true
+            };
+
+            // Get existing cart
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            alert('Design added to cart!');
+            window.location.href = 'merch.html';
+        });
+
+        // Variant selection
+        document.getElementById('variant-select').addEventListener('change', function() {
+            if (this.value) {
+                const option = this.options[this.selectedIndex];
+                currentVariant = JSON.parse(option.dataset.variant);
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initCanvas();
+            loadProducts();
+        });
+    </script>
+</body>
+</html>
+

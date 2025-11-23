@@ -127,6 +127,9 @@
         <div class="container mx-auto px-6 text-center">
             <h1 class="text-4xl md:text-6xl font-bold mb-6 fade-in">Official Merch</h1>
             <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s;">Premium quality merch from byJ.</p>
+            <a href="merch-designer.html" class="inline-block mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg fade-in" style="animation-delay: 0.4s;">
+                <i class="fas fa-palette mr-2"></i>Design Your Own Product
+            </a>
         </div>
     </section>
 
@@ -194,7 +197,10 @@
             
             <!-- Sample Packs Section -->
             <div class="mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Sample Packs</h2>
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Sample Packs</h2>
+                    <p class="text-gray-600">100% royalty free samples</p>
+                </div>
                 <div class="flex flex-wrap justify-center gap-8">
                     
                     <!-- Breaks Sample Pack -->
@@ -508,6 +514,7 @@
         let selectedSize = 'M';
         let currentModalProduct = null;
 
+
         // Product gallery images
         const productGallery = {
             'hoodie-blue': [
@@ -580,21 +587,30 @@
 
                 cart.forEach(item => {
                     subtotal += item.price * item.quantity;
+                    
+                    // Handle custom designs with images
+                    const itemImage = item.image || (item.isCustom && item.image ? item.image : null);
+                    const sizeDisplay = item.size ? `Size: ${item.size} - ` : '';
+                    const customBadge = item.isCustom ? '<span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded ml-2">Custom</span>' : '';
+                    
                     itemsHTML += `
                         <div class="flex justify-between items-center py-4 border-b border-gray-200">
-                            <div>
-                                <h4 class="font-medium">${item.name}</h4>
-                                <p class="text-gray-600 text-sm">Size: ${item.size} - $${item.price.toFixed(2)}</p>
+                            <div class="flex items-center gap-3 flex-1">
+                                ${itemImage ? `<img src="${itemImage}" alt="${item.name}" class="w-16 h-16 object-cover rounded">` : ''}
+                                <div>
+                                    <h4 class="font-medium">${item.name}${customBadge}</h4>
+                                    <p class="text-gray-600 text-sm">${sizeDisplay}$${item.price.toFixed(2)}</p>
+                                </div>
                             </div>
                             <div class="flex items-center">
-                                <button type="button" class="decrease-quantity text-gray-500 hover:text-gray-700 px-2 cursor-pointer" data-id="${item.id}" data-size="${item.size}">
+                                <button type="button" class="decrease-quantity text-gray-500 hover:text-gray-700 px-2 cursor-pointer" data-id="${item.id}" data-size="${item.size || ''}">
                                     <i class="fas fa-minus text-xs"></i>
                                 </button>
-                                <span class="mx-2 font-semibold cart-quantity" data-id="${item.id}" data-size="${item.size}">${item.quantity}</span>
-                                <button type="button" class="increase-quantity text-gray-500 hover:text-gray-700 px-2 cursor-pointer" data-id="${item.id}" data-size="${item.size}">
+                                <span class="mx-2 font-semibold cart-quantity" data-id="${item.id}" data-size="${item.size || ''}">${item.quantity}</span>
+                                <button type="button" class="increase-quantity text-gray-500 hover:text-gray-700 px-2 cursor-pointer" data-id="${item.id}" data-size="${item.size || ''}">
                                     <i class="fas fa-plus text-xs"></i>
                                 </button>
-                                <button type="button" class="remove-item text-red-500 hover:text-red-700 ml-4 px-2 py-1 rounded transition cursor-pointer" data-id="${item.id}" data-size="${item.size}">
+                                <button type="button" class="remove-item text-red-500 hover:text-red-700 ml-4 px-2 py-1 rounded transition cursor-pointer" data-id="${item.id}" data-size="${item.size || ''}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -656,6 +672,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            
             // Mobile menu functionality
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -876,15 +893,15 @@
                     e.stopPropagation();
                     
                     const id = button.getAttribute('data-id');
-                    const size = button.getAttribute('data-size');
+                    const size = button.getAttribute('data-size') || '';
                     
                     if (buttonType === 'decrease') {
-                        const item = cart.find(item => item.id === id && item.size === size);
+                        const item = cart.find(item => item.id === id && (item.size || '') === size);
                         if (item) {
                             if (item.quantity > 1) {
                                 item.quantity -= 1;
                             } else {
-                                const index = cart.findIndex(cartItem => cartItem.id === id && cartItem.size === size);
+                                const index = cart.findIndex(cartItem => cartItem.id === id && (cartItem.size || '') === size);
                                 if (index !== -1) {
                                     cart.splice(index, 1);
                                 }
@@ -892,13 +909,13 @@
                             updateCart();
                         }
                     } else if (buttonType === 'increase') {
-                        const item = cart.find(item => item.id === id && item.size === size);
+                        const item = cart.find(item => item.id === id && (item.size || '') === size);
                         if (item) {
                             item.quantity += 1;
                             updateCart();
                         }
                     } else if (buttonType === 'remove') {
-                        const index = cart.findIndex(item => item.id === id && item.size === size);
+                        const index = cart.findIndex(item => item.id === id && (item.size || '') === size);
                         if (index !== -1) {
                             cart.splice(index, 1);
                             updateCart();

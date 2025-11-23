@@ -31,9 +31,6 @@ app.use((req, res, next) => {
     express.urlencoded({ extended: true })(req, res, next);
 });
 
-// Serve static files
-app.use(express.static(__dirname));
-
 // Helper function to create a buffer-like function for webhook
 function createBufferFunction(req) {
     return async function buffer() {
@@ -131,10 +128,54 @@ app.all('/api/get-session-details', async (req, res) => {
     await loadHandler('./api/get-session-details.js', req, res);
 });
 
+app.all('/api/printful-products', async (req, res) => {
+    await loadHandler('./api/printful-products.js', req, res);
+});
+
+app.all('/api/printful-mockup', async (req, res) => {
+    await loadHandler('./api/printful-mockup.js', req, res);
+});
+
+app.all('/api/printful-order', async (req, res) => {
+    await loadHandler('./api/printful-order.js', req, res);
+});
+
+app.all('/api/printful-designer-nonce', async (req, res) => {
+    await loadHandler('./api/printful-designer-nonce.js', req, res);
+});
+
+// Serve printful demo page
+app.get('/printful-demo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'printful-demo.html'));
+});
+
+// Serve Printful API designer page
+app.get('/printful-api-designer', (req, res) => {
+    res.sendFile(path.join(__dirname, 'printful-api-designer.html'));
+});
+
+// Serve merch designer page
+app.get('/merch-designer', (req, res) => {
+    res.sendFile(path.join(__dirname, 'merch-designer.html'));
+});
+
+// Legacy route for designer (redirects to merch-designer)
+app.get('/designer', (req, res) => {
+    res.sendFile(path.join(__dirname, 'merch-designer.html'));
+});
+
+// Serve printful demo page
+app.get('/printful-demo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'printful-demo.html'));
+});
+
 // Fallback: serve index.html for root
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// Serve static files (after specific routes)
+app.use(express.static(__dirname));
 
 // Start server
 app.listen(PORT, () => {

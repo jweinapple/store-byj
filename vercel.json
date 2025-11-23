@@ -23,6 +23,18 @@
     },
     "api/health.js": {
       "maxDuration": 10
+    },
+    "api/printful-products.js": {
+      "maxDuration": 10
+    },
+    "api/printful-mockup.js": {
+      "maxDuration": 30
+    },
+    "api/printful-order.js": {
+      "maxDuration": 10
+    },
+    "api/printful-designer-nonce.js": {
+      "maxDuration": 10
     }
   },
   "headers": [
@@ -31,7 +43,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
+          "value": "GET, POST, DELETE, OPTIONS"
         },
         {
           "key": "Access-Control-Allow-Headers",
