@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - byJ. Sound Recycler</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Diagnostic: Check if page loads
+        console.log('✅ Page script starting...');
+        window.addEventListener('error', function(e) {
+            console.error('❌ JavaScript Error:', e.error);
+            document.body.innerHTML = '<div style="padding: 50px; text-align: center; color: red;"><h1>JavaScript Error</h1><p>' + (e.error ? e.error.message : 'Unknown error') + '</p><p>Check console for details.</p></div>';
+        });
+    </script>
+    
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .floating { animation: float 6s ease-in-out infinite; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Mobile Menu Animations */
+        #mobile-menu {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #mobile-menu.menu-open {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #mobile-menu a {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #mobile-menu.menu-open a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        #mobile-menu.menu-open a:nth-child(1) { transition-delay: 0.1s; }
+        #mobile-menu.menu-open a:nth-child(2) { transition-delay: 0.15s; }
+        #mobile-menu.menu-open a:nth-child(3) { transition-delay: 0.2s; }
+        #mobile-menu.menu-open a:nth-child(4) { transition-delay: 0.25s; }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="text-2xl font-bold">
+                    byJ.
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-purple-400 transition">Home</a>
+                    <a href="index.html#discography" class="hover:text-purple-400 transition">Music</a>
+                    <a href="merch.html" class="hover:text-purple-400 transition">Merch</a>
+                    <a href="index.html#about" class="hover:text-purple-400 transition">About</a>
+                </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800">
+                <div class="container mx-auto px-6 py-6 space-y-4">
+                    <a href="index.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Home</a>
+                    <a href="index.html#discography" class="block text-white hover:text-purple-400 transition py-3 text-lg">Music</a>
+                    <a href="merch.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch</a>
+                    <a href="index.html#about" class="block text-white hover:text-purple-400 transition py-3 text-lg">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 min-h-screen">
+        <div class="container mx-auto px-6 py-12">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Checkout
+                </h1>
+                <p class="text-xl text-gray-300">Complete your purchase securely</p>
+            </div>
+
+            <!-- Checkout Form -->
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Order Summary -->
+                    <div class="glass-effect rounded-2xl p-8 hover-lift">
+                        <h2 class="text-2xl font-bold mb-6 text-purple-300">Order Summary</h2>
+                        
+                        <!-- Cart Items -->
+                        <div id="cart-items" class="space-y-4 mb-6">
+                            <!-- Items will be populated by JavaScript -->
+                        </div>
+                        
+                        <!-- Total -->
+                        <div class="border-t border-gray-600 pt-4">
+                            <div class="flex justify-between text-xl font-bold">
+                                <span>Total:</span>
+                                <span id="total-price">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Form -->
+                    <div class="glass-effect rounded-2xl p-8 hover-lift">
+                        <h2 class="text-2xl font-bold mb-6 text-purple-300">Payment Details</h2>
+                        
+                        <!-- Stripe Elements will be inserted here -->
+                        <div id="payment-element">
+                            <!-- Stripe Elements will create form elements here -->
+                        </div>
+                        
+                        <!-- Error Messages -->
+                        <div id="payment-message" class="hidden mt-4 p-4 rounded-lg"></div>
+                        
+                        <!-- Pay Button -->
+                        <button id="submit-payment" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 hover:scale-105 mt-6">
+                            <span id="button-text">Pay Now</span>
+                            <div id="spinner" class="hidden">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </button>
+                        
+                        <!-- Security Notice -->
+                        <div class="mt-6 text-center text-sm text-gray-400">
+                            <i class="fas fa-lock mr-2"></i>
+                            Secured by Stripe • Your payment information is encrypted
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-800">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6">
+                <h3 class="text-3xl font-bold mb-2">
+                    byJ.<span class="text-purple-500">Sound Recycler</span>
+                </h3>
+                <p class="text-gray-400">Transforming sounds into sonic experiences</p>
+            </div>
+            <p class="text-gray-500">&copy; 2025 byJ. Sound Recycler. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Stripe with live key
+        let stripe;
+        
+        async function initializeStripeKey() {
+            try {
+                if (typeof Stripe === 'undefined') {
+                    console.error('Stripe.js library not loaded!');
+                    throw new Error('Stripe.js library failed to load');
+                }
+                
+                // Fetch the publishable key from server
+                const response = await fetch('/api/stripe-publishable-key');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch publishable key from server');
+                }
+                
+                const { publishableKey } = await response.json();
+                console.log('✅ Using Stripe publishable key:', publishableKey.substring(0, 20) + '...');
+                
+                stripe = Stripe(publishableKey);
+                console.log('✅ Stripe initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('❌ Failed to initialize Stripe:', error);
+                showMessage('Failed to initialize payment system. Please refresh the page.', 'error');
+                return false;
+            }
+        }
+        
+        // Initialize Stripe key on page load
+        initializeStripeKey();
+        
+        // Product image mapping
+        const productImages = {
+            'hoodie-blue': 'images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-front-681d82a98f0ed.png',
+            'hoodie-pink': 'images/products/hoodies/unisex-heavy-blend-hoodie-light-pink-front-681d82a991467.png',
+            'longsleeve-white': 'images/products/longsleeve/mens-long-sleeve-shirt-white-front-681d7d962b83a.png',
+            'hat-black': 'images/products/hats/classic-dad-hat-black-front-681d8147e35d7.png',
+            'hat-khaki': 'images/products/hats/classic-dad-hat-khaki-front-681d8147e4c63.png',
+            'sample-pack-test': 'https://via.placeholder.com/400x400/8B5CF6/FFFFFF?text=Sample+Pack',
+            'sample-pack-1': 'images/products/sample-packs/breaks-vol-1.png',
+            'sample-pack-2': 'images/products/sample-packs/melodies.png'
+        };
+
+        // Get cart data from URL parameters or use default sample data
+        let cartItems = [];
+        
+        // Check if cart data was passed from merch page
+        const urlParams = new URLSearchParams(window.location.search);
+        const cartData = urlParams.get('cart');
+        
+        if (cartData) {
+            try {
+                cartItems = JSON.parse(decodeURIComponent(cartData));
+                // Add product images to cart items
+                cartItems.forEach(item => {
+                    // Set image from mapping if available
+                    if (productImages[item.id]) {
+                        item.image = productImages[item.id];
+                    } 
+                    // If item already has an image, keep it
+                    else if (!item.image) {
+                        // Fallback placeholder if no image found
+                        item.image = 'https://via.placeholder.com/100x100/8B5CF6/FFFFFF?text=' + encodeURIComponent(item.name.substring(0, 10));
+                    }
+                });
+            } catch (e) {
+                console.error('Error parsing cart data:', e);
+                // Fall back to sample data if parsing fails
+                cartItems = [
+                    {
+                        id: 'hoodie-blue',
+                        name: 'byJ. Hoodie - Light Blue',
+                        price: 49.99,
+                        quantity: 1,
+                        size: 'M',
+                        image: 'images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-front-681d82a98f0ed.png'
+                    }
+                ];
+            }
+        } else {
+            // Default sample data if no cart data provided
+            cartItems = [
+                {
+                    id: 1,
+                    name: 'byJ. T-Shirt',
+                    price: 25.00,
+                    quantity: 1,
+                    image: 'https://via.placeholder.com/100x100/1DB954/FFFFFF?text=T-Shirt'
+                },
+                {
+                    id: 2,
+                    name: 'byJ. Vinyl',
+                    price: 30.00,
+                    quantity: 1,
+                    image: 'https://via.placeholder.com/100x100/1DB954/FFFFFF?text=Vinyl'
+                }
+            ];
+        }
+
+        // Calculate total
+        const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        // Display cart items
+        function displayCartItems() {
+            const cartContainer = document.getElementById('cart-items');
+            const totalElement = document.getElementById('total-price');
+            
+            cartContainer.innerHTML = cartItems.map(item => {
+                const imageUrl = item.image || 'https://via.placeholder.com/100x100/8B5CF6/FFFFFF?text=Product';
+                return `
+                <div class="flex items-center space-x-4">
+                    <img src="${imageUrl}" 
+                         alt="${item.name}" 
+                         class="w-16 h-16 rounded-lg object-cover"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/100x100/8B5CF6/FFFFFF?text=Product';">
+                    <div class="flex-1">
+                        <h3 class="font-semibold">${item.name}</h3>
+                        <p class="text-gray-400">
+                            $${item.price.toFixed(2)} × ${item.quantity}
+                            ${item.size ? ` • Size: ${item.size}` : ''}
+                        </p>
+                    </div>
+                    <div class="font-bold">
+                        $${(item.price * item.quantity).toFixed(2)}
+                    </div>
+                </div>
+            `;
+            }).join('');
+            
+            totalElement.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Initialize Stripe Elements
+        let elements;
+        let paymentElement;
+
+        async function initializeStripe() {
+            try {
+                // Check if Stripe is initialized, if not, try to initialize it
+                if (!stripe) {
+                    console.log('Stripe not initialized, attempting to initialize...');
+                    const initialized = await initializeStripeKey();
+                    if (!initialized || !stripe) {
+                        showMessage('Payment system not initialized. Please refresh the page.', 'error');
+                        resetButtonState();
+                        return;
+                    }
+                }
+                
+                // Create checkout session
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: cartItems,
+                        successUrl: window.location.origin + '/success.html',
+                        cancelUrl: window.location.href
+                    })
+                });
+
+                // Check if response is ok
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                    console.error('API Error:', errorData);
+                    showMessage(errorData.error || `Server error: ${response.status}`, 'error');
+                    resetButtonState();
+                    return;
+                }
+
+                const data = await response.json();
+                
+                // Check if we got a session ID
+                if (!data.id) {
+                    console.error('No session ID in response:', data);
+                    showMessage('Failed to create checkout session. Please try again.', 'error');
+                    resetButtonState();
+                    return;
+                }
+                
+                console.log('Redirecting to checkout with session:', data.id);
+                
+                // Handle free orders (skip Stripe checkout)
+                if (data.free && data.url) {
+                    console.log('Free order - redirecting directly to success page');
+                    window.location.href = data.url;
+                    return;
+                }
+                
+                // Redirect to Stripe Checkout for paid orders
+                const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
+                
+                if (error) {
+                    console.error('Stripe redirect error:', error);
+                    showMessage(error.message || 'Payment failed. Please try again.', 'error');
+                    resetButtonState();
+                }
+                // If redirect succeeds, we'll be redirected away, so no need to reset button
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage(error.message || 'Something went wrong. Please try again.', 'error');
+                resetButtonState();
+            }
+        }
+
+        // Show error/success messages
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('payment-message');
+            messageElement.textContent = message;
+            messageElement.className = `mt-4 p-4 rounded-lg ${type === 'error' ? 'bg-red-500/20 text-red-400' : 'bg-green-500/20 text-green-400'}`;
+            messageElement.classList.remove('hidden');
+        }
+
+        // Helper function to reset button state
+        function resetButtonState() {
+            const button = document.getElementById('submit-payment');
+            const buttonText = document.getElementById('button-text');
+            const spinner = document.getElementById('spinner');
+            
+            button.disabled = false;
+            buttonText.classList.remove('hidden');
+            spinner.classList.add('hidden');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('menu-open');
+                    // Toggle hamburger icon animation
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileMenu.classList.contains('menu-open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close mobile menu when clicking on links
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('menu-open');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+            
+            displayCartItems();
+            
+            // Handle pay button click
+            document.getElementById('submit-payment').addEventListener('click', async () => {
+                const button = document.getElementById('submit-payment');
+                const buttonText = document.getElementById('button-text');
+                const spinner = document.getElementById('spinner');
+                
+                // Show loading state
+                button.disabled = true;
+                buttonText.classList.add('hidden');
+                spinner.classList.remove('hidden');
+                
+                try {
+                    await initializeStripe();
+                    // Note: If redirect succeeds, we won't reach here
+                    // If there's an error, initializeStripe will show it and we'll reset the button
+                } catch (error) {
+                    console.error('Unexpected error:', error);
+                    resetButtonState();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

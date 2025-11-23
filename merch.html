@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>byJ. - Merch Store</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    <link rel="apple-touch-icon" href="images/other/DSC_4582.jpeg">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="byJ. - Official Merch Store">
+    <meta property="og:description" content="Shop official byJ. merchandise - Hoodies, Long Sleeves, and Dad Hats">
+    <meta property="og:image" content="https://producedbyj.netlify.app/images/other/DSC_4582.jpeg">
+    <meta property="og:url" content="https://producedbyj.netlify.app/merch.html">
+    <meta property="og:type" content="website">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .product-image {
+            transition: transform 0.3s ease;
+        }
+        .decrease-quantity,
+        .increase-quantity,
+        .remove-item {
+            pointer-events: auto !important;
+            user-select: none;
+        }
+        .decrease-quantity i,
+        .increase-quantity i,
+        .remove-item i {
+            pointer-events: none;
+        }
+        .test-products-section {
+            display: none !important;
+        }
+        .test-products-section.show-test {
+            display: block !important;
+        }
+        
+        /* Mobile Menu Animations */
+        #mobile-menu {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #mobile-menu.menu-open {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #mobile-menu a {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #mobile-menu.menu-open a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        #mobile-menu.menu-open a:nth-child(1) { transition-delay: 0.1s; }
+        #mobile-menu.menu-open a:nth-child(2) { transition-delay: 0.15s; }
+        #mobile-menu.menu-open a:nth-child(3) { transition-delay: 0.2s; }
+        #mobile-menu.menu-open a:nth-child(4) { transition-delay: 0.25s; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-black text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-2xl font-bold tracking-tight">byJ.</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="hover:text-purple-400 transition">Home</a>
+                    <a href="index.html#music" class="hover:text-purple-400 transition">Music</a>
+                    <a href="#products" class="hover:text-purple-400 transition">Merch</a>
+                    <a href="index.html#connect" class="hover:text-purple-400 transition">Connect</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="cart-toggle" class="relative">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                    <!-- Mobile menu button -->
+                    <button class="md:hidden text-white" id="mobile-menu-btn">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800">
+                <div class="container mx-auto px-6 py-6 space-y-4">
+                    <a href="index.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Home</a>
+                    <a href="index.html#music" class="block text-white hover:text-purple-400 transition py-3 text-lg">Music</a>
+                    <a href="#products" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch</a>
+                    <a href="index.html#connect" class="block text-white hover:text-purple-400 transition py-3 text-lg">Connect</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-gray-900 to-purple-900 text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 fade-in">Official Merch</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto fade-in" style="animation-delay: 0.2s;">Premium quality merch from byJ.</p>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="py-16">
+        <div class="container mx-auto px-6">
+            
+            <!-- Physical Releases Section -->
+            <div class="mb-16">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Physical Releases</h2>
+                    <p class="text-gray-600">Vinyl & CD editions available on Elastic Stage</p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <a href="https://elasticstage.com/byj/releases/believe-it-or-not-album" target="_blank" rel="noopener noreferrer" class="block group">
+                        <div class="product-card bg-gradient-to-br from-purple-900 via-black to-purple-900 rounded-lg overflow-hidden shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 transform hover:scale-[1.02]">
+                            <div class="relative overflow-hidden">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                                    <!-- Left side - Album Cover -->
+                                    <div class="relative min-h-[300px] md:min-h-[400px] overflow-hidden">
+                                        <img 
+                                            src="images/other/Drew Famous - Believe It (or Not!) Album Cover.jpg" 
+                                            alt="Believe It Or Not Album Cover" 
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                            onerror="this.src='images/other/DSC_4582.jpeg';"
+                                        />
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                        <!-- Vinyl icon overlay on hover -->
+                                        <div class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <div class="bg-black/70 backdrop-blur-sm rounded-full p-3">
+                                                <i class="fas fa-compact-disc text-purple-400 text-2xl"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Right side - Info -->
+                                    <div class="bg-black/50 backdrop-blur-sm p-8 md:p-12 flex flex-col justify-center text-white">
+                                        <div class="mb-4">
+                                            <span class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">PHYSICAL RELEASE</span>
+                                            <h3 class="text-3xl font-bold mb-3 group-hover:text-purple-400 transition-colors">Believe It Or Not</h3>
+                                            <p class="text-gray-300 text-lg mb-4">Limited edition vinyl & CD</p>
+                                        </div>
+                                        <div class="space-y-2 mb-6">
+                                            <div class="flex items-center text-gray-300">
+                                                <i class="fas fa-compact-disc mr-2 text-purple-400"></i>
+                                                <span>Available on Elastic Stage</span>
+                                            </div>
+                                            <div class="flex items-center text-gray-300">
+                                                <i class="fas fa-shipping-fast mr-2 text-purple-400"></i>
+                                                <span>Worldwide shipping</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center text-purple-400 font-bold group-hover:text-pink-400 transition-colors">
+                                            <span class="mr-2">Shop Now</span>
+                                            <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hover overlay effect -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/10 to-purple-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Sample Packs Section -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Sample Packs</h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    
+                    <!-- Breaks Sample Pack -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('@producedbyj - Breaks byJ. Vol. 1', 'images/products/sample-packs/breaks-vol-1.png', 'High-energy breakbeat samples and loops - Digital download', '$19.99', 'sample-pack-1')">
+                            <img src="images/products/sample-packs/breaks-vol-1.png" alt="Breaks Sample Pack" class="product-image w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">DIGITAL</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">@producedbyj - Breaks byJ. Vol. 1</h3>
+                            <p class="text-gray-600 text-sm mb-2">High-energy breakbeat samples and loops</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">$19.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-red-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="sample-pack-1" data-name="@producedbyj - Breaks byJ. Vol. 1" data-price="19.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Melodies Sample Pack -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('@producedbyj - Melodies byJ. - III', 'images/products/sample-packs/melodies.png', 'Melodic samples and chord progressions - Digital download', '$19.99', 'sample-pack-2')">
+                            <img src="images/products/sample-packs/melodies.png" alt="Melodies Sample Pack" class="product-image w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full">DIGITAL</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">@producedbyj - Melodies byJ. - III</h3>
+                            <p class="text-gray-600 text-sm mb-2">Melodic samples and chord progressions</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">$19.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-teal-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="sample-pack-2" data-name="@producedbyj - Melodies byJ. - III" data-price="19.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hoodies Section -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Hoodies</h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    
+                    <!-- Light Blue Hoodie -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('byJ. Hoodie - Light Blue', 'images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-front-681d82a98f0ed.png', 'Premium heavy blend hoodie with byJ. branding in light blue', '$49.99', 'hoodie-blue')">
+                            <img src="images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-front-681d82a98f0ed.png" alt="Light Blue Hoodie" class="product-image w-full h-64 object-cover bg-gradient-to-br from-blue-300 to-blue-400" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-300 to-blue-400 flex items-center justify-center text-white text-6xl hidden">
+                                🧥
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">byJ. Hoodie - Light Blue</h3>
+                            <p class="text-gray-600 text-sm mb-2">Heavy blend hoodie with sleeve and back graphics</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">$49.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-purple-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="hoodie-blue" data-name="byJ. Hoodie - Light Blue" data-price="49.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Light Pink Hoodie -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('byJ. Hoodie - Light Pink', 'images/products/hoodies/unisex-heavy-blend-hoodie-light-pink-front-681d82a991467.png', 'Premium heavy blend hoodie with byJ. branding in light pink', '$49.99', 'hoodie-pink')">
+                            <img src="images/products/hoodies/unisex-heavy-blend-hoodie-light-pink-front-681d82a991467.png" alt="Light Pink Hoodie" class="product-image w-full h-64 object-cover bg-gradient-to-br from-pink-300 to-pink-400" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="absolute inset-0 bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center text-white text-6xl hidden">
+                                🧥
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">byJ. Hoodie - Light Pink</h3>
+                            <p class="text-gray-600 text-sm mb-2">Heavy blend hoodie with sleeve and back graphics</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">$49.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-purple-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="hoodie-pink" data-name="byJ. Hoodie - Light Pink" data-price="49.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Long Sleeve Shirts Section -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Long Sleeve Shirts</h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    
+                    <!-- White Long Sleeve -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('byJ. Long Sleeve - White', 'images/products/longsleeve/mens-long-sleeve-shirt-white-front-681d7d962b83a.png', 'Premium quality long sleeve with byJ. branding and back graphic', '$34.99', 'longsleeve-white')">
+                            <img src="images/products/longsleeve/mens-long-sleeve-shirt-white-front-681d7d962b83a.png" alt="White Long Sleeve" class="product-image w-full h-64 object-cover bg-gradient-to-br from-gray-200 to-gray-300" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-gray-700 text-6xl hidden">
+                                👕
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded-full">NEW</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">byJ. Long Sleeve - White</h3>
+                            <p class="text-gray-600 text-sm mb-2">Premium long sleeve with sleeve and back graphics</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">$34.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-purple-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="longsleeve-white" data-name="byJ. Long Sleeve - White" data-price="34.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dad Hats Section -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Dad Hats</h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    
+                    <!-- Black Dad Hat -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('byJ. Dad Hat - Black', 'images/products/hats/classic-dad-hat-black-front-681d8147e35d7.png', 'Classic dad hat with embroidered byJ. logo in black', '$24.99', 'hat-black')">
+                            <img src="images/products/hats/classic-dad-hat-black-front-681d8147e35d7.png" alt="Black Dad Hat" class="product-image w-full h-64 object-cover bg-gradient-to-br from-gray-800 to-gray-900" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-6xl hidden">
+                                🧢
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">SALE</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">byJ. Dad Hat - Black</h3>
+                            <p class="text-gray-600 text-sm mb-2">Embroidered logo on front and back</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800"><span class="text-red-500 line-through mr-1">$29.99</span> $24.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-purple-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="hat-black" data-name="byJ. Dad Hat - Black" data-price="24.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Khaki Dad Hat -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('byJ. Dad Hat - Khaki', 'images/products/hats/classic-dad-hat-khaki-front-681d8147e4c63.png', 'Classic dad hat with embroidered byJ. logo in khaki', '$24.99', 'hat-khaki')">
+                            <img src="images/products/hats/classic-dad-hat-khaki-front-681d8147e4c63.png" alt="Khaki Dad Hat" class="product-image w-full h-64 object-cover bg-gradient-to-br from-yellow-700 to-yellow-600" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="absolute inset-0 bg-gradient-to-br from-yellow-700 to-yellow-600 flex items-center justify-center text-white text-6xl hidden">
+                                🧢
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">SALE</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">byJ. Dad Hat - Khaki</h3>
+                            <p class="text-gray-600 text-sm mb-2">Embroidered logo on front and back</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800"><span class="text-red-500 line-through mr-1">$29.99</span> $24.99</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-purple-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="hat-khaki" data-name="byJ. Dad Hat - Khaki" data-price="24.99">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Products Section -->
+            <div class="mb-16 test-products-section" id="test-products-section">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Test Products</h2>
+                <div class="flex flex-wrap justify-center gap-8">
+                    
+                    <!-- Free Test Product -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('Free Test Product', 'https://via.placeholder.com/400x400/10B981/FFFFFF?text=FREE', 'Free product for testing database logging - No payment required', 'FREE', 'free-test-product')">
+                            <img src="https://via.placeholder.com/400x400/10B981/FFFFFF?text=FREE" alt="Free Test Product" class="product-image w-full h-64 object-cover bg-gradient-to-br from-green-500 to-green-600">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">FREE</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">Free Test Product</h3>
+                            <p class="text-gray-600 text-sm mb-2">Free product for testing database logging</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-green-600">FREE</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-green-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="free-test-product" data-name="Free Test Product" data-price="0.00">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sample Pack Test Product -->
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] max-w-sm">
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal('byJ. Sample Pack - Test', 'https://via.placeholder.com/400x400/8B5CF6/FFFFFF?text=Sample+Pack', 'Test product for Stripe checkout functionality - Digital sample pack', '$0.50', 'sample-pack-test')">
+                            <img src="https://via.placeholder.com/400x400/8B5CF6/FFFFFF?text=Sample+Pack" alt="Sample Pack Test" class="product-image w-full h-64 object-cover bg-gradient-to-br from-purple-500 to-purple-600">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300"></div>
+                            <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">TEST</div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">byJ. Sample Pack - Test</h3>
+                            <p class="text-gray-600 text-sm mb-2">Digital sample pack for testing checkout</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-gray-800">$0.50</span>
+                                <button class="add-to-cart bg-gray-900 hover:bg-purple-700 text-white px-3 py-1 rounded-full text-sm transition" data-id="sample-pack-test" data-name="byJ. Sample Pack - Test" data-price="0.50">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Modal -->
+            <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+                <div class="bg-white rounded-lg max-w-4xl w-full overflow-hidden max-h-[90vh] overflow-y-auto">
+                    <div class="relative">
+                        <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                        <div class="grid grid-cols-1 md:grid-cols-2">
+                            <div class="bg-gray-100 p-8">
+                                <img id="modal-image" src="" alt="Product" class="w-full h-auto mb-4">
+                                <div id="modal-gallery" class="grid grid-cols-4 gap-2">
+                                    <!-- Gallery images will be inserted here -->
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h2 id="modal-title" class="text-2xl font-bold mb-2"></h2>
+                                <p id="modal-description" class="text-gray-600 mb-4"></p>
+                                <div class="mb-6">
+                                    <h3 class="font-semibold mb-2">Size</h3>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <button class="size-btn border border-gray-300 py-2 px-3 rounded hover:border-purple-500 hover:bg-purple-50 transition" data-size="S">S</button>
+                                        <button class="size-btn border border-gray-300 py-2 px-3 rounded hover:border-purple-500 hover:bg-purple-50 transition" data-size="M">M</button>
+                                        <button class="size-btn border border-gray-300 py-2 px-3 rounded hover:border-purple-500 hover:bg-purple-50 transition" data-size="L">L</button>
+                                        <button class="size-btn border border-gray-300 py-2 px-3 rounded hover:border-purple-500 hover:bg-purple-50 transition" data-size="XL">XL</button>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center mb-6">
+                                    <span id="modal-price" class="text-2xl font-bold"></span>
+                                    <button id="modal-add-to-cart" class="bg-gray-900 hover:bg-purple-700 text-white px-6 py-2 rounded-full transition">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Your Cart</h3>
+                <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="mb-6">
+                <div class="text-center py-8 text-gray-500" id="empty-cart-message">
+                    <i class="fas fa-shopping-cart text-4xl mb-4"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-4 mb-4">
+                <div class="flex justify-between mb-2">
+                    <span class="font-semibold">Subtotal</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-semibold">Shipping</span>
+                    <span>Calculated at checkout</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold mt-4">
+                    <span>Total</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+            </div>
+            
+            <button id="checkout-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50" disabled>
+                Checkout
+            </button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-xl font-bold mb-4">byJ.</h3>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws" target="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-spotify"></i></a>
+                <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-apple"></i></a>
+                <a href="https://www.instagram.com/producedbyj" target="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-gray-400">&copy; 2025 byJ. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const cart = [];
+        let selectedSize = 'M';
+        let currentModalProduct = null;
+
+        // Product gallery images
+        const productGallery = {
+            'hoodie-blue': [
+                'images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-front-681d82a98f0ed.png',
+                'images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-left-681d82a9907f8.png',
+                'images/products/hoodies/unisex-heavy-blend-hoodie-light-blue-back-681d82a98fc9e.png'
+            ],
+            'hoodie-pink': [
+                'images/products/hoodies/unisex-heavy-blend-hoodie-light-pink-front-681d82a991467.png',
+                'images/products/hoodies/unisex-heavy-blend-hoodie-light-pink-left-681d82a997a74.png',
+                'images/products/hoodies/unisex-heavy-blend-hoodie-light-pink-back-681d82a9948ca.png'
+            ],
+            'longsleeve-white': [
+                'images/products/longsleeve/mens-long-sleeve-shirt-white-front-681d7d962b83a.png',
+                'images/products/longsleeve/mens-long-sleeve-shirt-white-left-681d7d962c572.png',
+                'images/products/longsleeve/mens-long-sleeve-shirt-white-back-681d7d962c257.png'
+            ],
+            'hat-black': [
+                'images/products/hats/classic-dad-hat-black-front-681d8147e35d7.png',
+                'images/products/hats/classic-dad-hat-black-back-681d8147e4058.png'
+            ],
+            'hat-khaki': [
+                'images/products/hats/classic-dad-hat-khaki-front-681d8147e4c63.png',
+                'images/products/hats/classic-dad-hat-khaki-back-681d8147e522f.png'
+            ],
+            'sample-pack-test': [
+                'https://via.placeholder.com/400x400/8B5CF6/FFFFFF?text=Sample+Pack'
+            ],
+            'sample-pack-1': [
+                'images/products/sample-packs/breaks-vol-1.png'
+            ],
+            'sample-pack-2': [
+                'images/products/sample-packs/melodies.png'
+            ]
+        };
+
+        function updateCart() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartSubtotal = document.getElementById('cart-subtotal');
+            const cartTotal = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            if (cart.length === 0) {
+                // Show empty cart message
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-500" id="empty-cart-message">
+                        <i class="fas fa-shopping-cart text-4xl mb-4"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                checkoutBtn.disabled = true;
+                cartSubtotal.textContent = '$0.00';
+                cartTotal.textContent = '$0.00';
+                
+                // Close cart when it becomes empty
+                const cartSidebar = document.getElementById('cart-sidebar');
+                const cartOverlay = document.getElementById('cart-overlay');
+                if (!cartSidebar.classList.contains('translate-x-full')) {
+                    cartSidebar.classList.add('translate-x-full');
+                    cartOverlay.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            } else {
+                let itemsHTML = '';
+                let subtotal = 0;
+
+                cart.forEach(item => {
+                    subtotal += item.price * item.quantity;
+                    itemsHTML += `
+                        <div class="flex justify-between items-center py-4 border-b border-gray-200">
+                            <div>
+                                <h4 class="font-medium">${item.name}</h4>
+                                <p class="text-gray-600 text-sm">Size: ${item.size} - $${item.price.toFixed(2)}</p>
+                            </div>
+                            <div class="flex items-center">
+                                <button type="button" class="decrease-quantity text-gray-500 hover:text-gray-700 px-2 cursor-pointer" data-id="${item.id}" data-size="${item.size}">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                                <span class="mx-2 font-semibold cart-quantity" data-id="${item.id}" data-size="${item.size}">${item.quantity}</span>
+                                <button type="button" class="increase-quantity text-gray-500 hover:text-gray-700 px-2 cursor-pointer" data-id="${item.id}" data-size="${item.size}">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                                <button type="button" class="remove-item text-red-500 hover:text-red-700 ml-4 px-2 py-1 rounded transition cursor-pointer" data-id="${item.id}" data-size="${item.size}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cartItemsContainer.innerHTML = itemsHTML;
+                
+                cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+                cartTotal.textContent = `$${subtotal.toFixed(2)}`;
+                checkoutBtn.disabled = false;
+            }
+        }
+
+
+        function openProductModal(title, image, description, price, id) {
+            const modal = document.getElementById('product-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalPrice = document.getElementById('modal-price');
+            const modalGallery = document.getElementById('modal-gallery');
+
+            modalImage.src = image;
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modalPrice.textContent = price;
+            
+            // Load gallery images
+            const galleryImages = productGallery[id] || [image];
+            modalGallery.innerHTML = galleryImages.map(img => 
+                `<img src="${img}" alt="Product view" class="w-full h-20 object-cover cursor-pointer rounded hover:opacity-75 transition" onclick="document.getElementById('modal-image').src='${img}'">`
+            ).join('');
+            
+            // Safely parse price (handles "FREE", "$19.99", "0.50", etc.)
+            const numericPriceString = price.replace(/[^0-9.]/g, '');
+            const numericPrice = numericPriceString ? parseFloat(numericPriceString) : 0;
+
+            currentModalProduct = { id, title, price: numericPrice };
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentModalProduct = null;
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const cartOverlay = document.getElementById('cart-overlay');
+            cartSidebar.classList.toggle('translate-x-full');
+            cartOverlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('menu-open');
+                    // Toggle hamburger icon animation
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileMenu.classList.contains('menu-open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close mobile menu when clicking on links
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('menu-open');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+            
+            const cartToggle = document.getElementById('cart-toggle');
+            const closeCart = document.getElementById('close-cart');
+            const cartOverlay = document.getElementById('cart-overlay');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            const modalAddToCart = document.getElementById('modal-add-to-cart');
+            
+            // Handle URL parameters for direct product addition
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('product');
+            const openCartParam = urlParams.get('openCart');
+            
+            // Show test products only if URL parameter ?showTest=true is present
+            if (urlParams.get('showTest') === 'true') {
+                const testProductsSection = document.getElementById('test-products-section');
+                if (testProductsSection) {
+                    testProductsSection.classList.add('show-test');
+                }
+            }
+            
+            if (productId && openCartParam === 'true') {
+                // Find the product data from the add-to-cart buttons
+                const productButton = document.querySelector(`[data-id="${productId}"]`);
+                if (productButton) {
+                    const name = productButton.getAttribute('data-name');
+                    const price = parseFloat(productButton.getAttribute('data-price'));
+                    
+                    // Add product to cart
+                    const existingItem = cart.find(item => item.id === productId && item.size === 'M');
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        // Get image from product gallery
+                        const productImage = productGallery[productId] 
+                            ? productGallery[productId][0] 
+                            : null;
+                        
+                        cart.push({
+                            id: productId,
+                            name,
+                            price,
+                            size: 'M',
+                            quantity: 1,
+                            image: productImage
+                        });
+                    }
+                    
+                    updateCart();
+                    
+                    // Open cart sidebar
+                    toggleCart();
+                    
+                    // Clean up URL parameters
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            }
+            
+            cartToggle.addEventListener('click', toggleCart);
+            closeCart.addEventListener('click', toggleCart);
+            cartOverlay.addEventListener('click', toggleCart);
+            
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    sizeButtons.forEach(btn => btn.classList.remove('border-purple-500', 'bg-purple-50'));
+                    this.classList.add('border-purple-500', 'bg-purple-50');
+                    selectedSize = this.getAttribute('data-size');
+                });
+            });
+
+            modalAddToCart.addEventListener('click', function() {
+                if (currentModalProduct) {
+                    const existingItem = cart.find(item => 
+                        item.id === currentModalProduct.id && item.size === selectedSize
+                    );
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        // Get image from product gallery
+                        const productImage = productGallery[currentModalProduct.id] 
+                            ? productGallery[currentModalProduct.id][0] 
+                            : null;
+                        
+                        cart.push({
+                            id: currentModalProduct.id,
+                            name: currentModalProduct.title,
+                            price: currentModalProduct.price,
+                            size: selectedSize,
+                            quantity: 1,
+                            image: productImage
+                        });
+                    }
+                    
+                    updateCart();
+                    closeProductModal();
+                    toggleCart();
+                }
+            });
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    
+                    const existingItem = cart.find(item => item.id === id && item.size === 'M');
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        // Get image from product gallery
+                        const productImage = productGallery[id] 
+                            ? productGallery[id][0] 
+                            : null;
+                        
+                        cart.push({
+                            id,
+                            name,
+                            price,
+                            size: 'M',
+                            quantity: 1,
+                            image: productImage
+                        });
+                    }
+                    
+                    updateCart();
+                    
+                    // Auto-open cart when item is added
+                    if (document.getElementById('cart-sidebar').classList.contains('translate-x-full')) {
+                        toggleCart();
+                    }
+                    
+                    this.classList.add('bg-purple-700');
+                    setTimeout(() => {
+                        this.classList.remove('bg-purple-700');
+                    }, 300);
+                });
+            });
+            
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.length === 0) {
+                    alert('Your cart is empty!');
+                    return;
+                }
+                
+                // Redirect to checkout page with cart data
+                const cartData = encodeURIComponent(JSON.stringify(cart));
+                window.location.href = `checkout.html?cart=${cartData}`;
+            });
+
+            document.getElementById('product-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeProductModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeProductModal();
+                }
+            });
+
+            // Event delegation for cart buttons (works with dynamically added buttons)
+            const cartItemsContainer = document.getElementById('cart-items');
+            
+            // Event delegation - listen for clicks on the cart items container
+            cartItemsContainer.addEventListener('click', function(e) {
+                let button = null;
+                let buttonType = null;
+                
+                // Check if the clicked element or any parent is one of our buttons
+                if (e.target.closest('.decrease-quantity')) {
+                    button = e.target.closest('.decrease-quantity');
+                    buttonType = 'decrease';
+                } else if (e.target.closest('.increase-quantity')) {
+                    button = e.target.closest('.increase-quantity');
+                    buttonType = 'increase';
+                } else if (e.target.closest('.remove-item')) {
+                    button = e.target.closest('.remove-item');
+                    buttonType = 'remove';
+                }
+                
+                if (button && buttonType) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const id = button.getAttribute('data-id');
+                    const size = button.getAttribute('data-size');
+                    
+                    if (buttonType === 'decrease') {
+                        const item = cart.find(item => item.id === id && item.size === size);
+                        if (item) {
+                            if (item.quantity > 1) {
+                                item.quantity -= 1;
+                            } else {
+                                const index = cart.findIndex(cartItem => cartItem.id === id && cartItem.size === size);
+                                if (index !== -1) {
+                                    cart.splice(index, 1);
+                                }
+                            }
+                            updateCart();
+                        }
+                    } else if (buttonType === 'increase') {
+                        const item = cart.find(item => item.id === id && item.size === size);
+                        if (item) {
+                            item.quantity += 1;
+                            updateCart();
+                        }
+                    } else if (buttonType === 'remove') {
+                        const index = cart.findIndex(item => item.id === id && item.size === size);
+                        if (index !== -1) {
+                            cart.splice(index, 1);
+                            updateCart();
+                        }
+                    }
+                    
+                    return false;
+                }
+            });
+
+            // Initialize cart UI on load
+            updateCart();
+        });
+    </script>
+</body>
+</html>

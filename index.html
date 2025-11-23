@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>byJ. - Sound Recycler</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    <link rel="apple-touch-icon" href="images/other/DSC_4582.jpeg">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="byJ. - Sound Recycler">
+    <meta property="og:description" content="Music Producer & Audio Engineer | 30M+ streams worldwide | Baltimore to Los Angeles">
+    <meta property="og:image" content="https://producedbyj.netlify.app/images/other/DSC_4582.jpeg">
+    <meta property="og:url" content="https://producedbyj.netlify.app">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="byJ. - Sound Recycler">
+    <meta name="twitter:description" content="Music Producer & Audio Engineer | 30M+ streams worldwide">
+    <meta name="twitter:image" content="https://producedbyj.netlify.app/images/other/DSC_4582.jpeg">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 40px rgba(168, 85, 247, 0.3),
+                           0 0 80px rgba(168, 85, 247, 0.2),
+                           inset 0 0 20px rgba(168, 85, 247, 0.1);
+            }
+            50% { 
+                box-shadow: 0 0 60px rgba(168, 85, 247, 0.5),
+                           0 0 120px rgba(168, 85, 247, 0.3),
+                           inset 0 0 30px rgba(168, 85, 247, 0.2);
+            }
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .floating { 
+            animation: float 20s ease-in-out infinite; 
+        }
+        
+        .pulse-glow { 
+            animation: pulse-glow 3s ease-in-out infinite; 
+        }
+        
+        .gradient-animate {
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(168, 85, 247, 0.4);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5),
+                        0 0 40px rgba(168, 85, 247, 0.3);
+        }
+        
+        .nav-blur {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+        }
+        
+        .reveal-on-scroll {
+            opacity: 0;
+            animation: reveal 0.8s ease forwards;
+        }
+        
+        .spin-slow {
+            animation: spin-slow 30s linear infinite;
+        }
+        
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(5deg) rotateX(5deg) scale(1.05);
+        }
+        
+        .magnetic-button {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .magnetic-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .magnetic-button::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(45deg, #a855f7, #ec4899, #3b82f6, #a855f7);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            filter: blur(20px);
+        }
+        
+        .magnetic-button:hover::before {
+            opacity: 1;
+            animation: gradient-shift 3s ease infinite;
+            background-size: 300% 300%;
+        }
+        
+        .neon-border {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, #a855f7, #ec4899, #3b82f6, #a855f7);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            background-size: 300% 300%;
+        }
+        
+        .neon-border:hover::before {
+            opacity: 1;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #a855f7, #ec4899);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #c084fc, #f472b6);
+        }
+        
+        /* Mobile Menu Animations */
+        #mobile-menu {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #mobile-menu.menu-open {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #mobile-menu a {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #mobile-menu.menu-open a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        #mobile-menu.menu-open a:nth-child(1) { transition-delay: 0.1s; }
+        #mobile-menu.menu-open a:nth-child(2) { transition-delay: 0.15s; }
+        #mobile-menu.menu-open a:nth-child(3) { transition-delay: 0.2s; }
+        #mobile-menu.menu-open a:nth-child(4) { transition-delay: 0.25s; }
+    </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur transition-all duration-300">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-3xl font-bold text-glow">
+                    byJ<span class="text-purple-400">.</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#discography" class="hover:text-purple-400 transition-colors font-medium">Discography</a>
+                    <a href="#about" class="hover:text-purple-400 transition-colors font-medium">About</a>
+                    <a href="merch.html" class="hover:text-purple-400 transition-colors font-medium">Merch</a>
+                    <a href="#connect" class="magnetic-button bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-8 py-3 rounded-full transition-all font-bold">
+                        Connect
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800">
+                <div class="container mx-auto px-6 py-6 space-y-4">
+                    <a href="#discography" class="block text-white hover:text-purple-400 transition py-3 text-lg">Discography</a>
+                    <a href="#about" class="block text-white hover:text-purple-400 transition py-3 text-lg">About</a>
+                    <a href="merch.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch</a>
+                    <a href="#connect" class="block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-3 rounded-full transition text-center font-bold">Connect</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- Animated gradient background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-900 via-black via-50% to-blue-900 gradient-animate"></div>
+        
+        <!-- Floating orbs -->
+        <div class="absolute top-20 left-10 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 floating"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 floating" style="animation-delay: 3s;"></div>
+        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 floating" style="animation-delay: 6s;"></div>
+        
+        <!-- Spinning rings -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-[600px] h-[600px] border border-purple-500/20 rounded-full spin-slow"></div>
+            <div class="absolute w-[700px] h-[700px] border border-pink-500/10 rounded-full spin-slow" style="animation-duration: 40s; animation-direction: reverse;"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 pt-20">
+            <!-- Hero Header -->
+            <div class="text-center mb-16 reveal-on-scroll">
+                <div class="inline-block mb-6">
+                    <span class="px-6 py-2 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium backdrop-blur-sm">
+                        30M+ Streams Worldwide
+                    </span>
+                </div>
+                <h1 class="text-7xl md:text-9xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent text-glow leading-tight">
+                    byJ.
+                </h1>
+                <p class="text-4xl md:text-5xl text-purple-300 font-light mb-4">Sound Recycler</p>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    Transforming forgotten sounds into modern sonic experiences
+                </p>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto reveal-on-scroll" style="animation-delay: 0.2s;">
+                <!-- YouTube Video Section -->
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-3xl p-4 hover-lift neon-border">
+                        <div class="relative w-full rounded-2xl overflow-hidden" style="padding-bottom: 56.25%;">
+                            <iframe 
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube.com/embed/TstsLNYwR54"
+                                title="byJ. - Latest Video"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Streaming Links -->
+                    <div class="flex justify-center space-x-4">
+                        <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws?si=91Ff7vFWQMSkD2h9km0f1w" target="_blank" class="group">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-green-500/50 transition-all">
+                                <i class="fab fa-spotify text-3xl text-white"></i>
+                            </div>
+                        </a>
+                        <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="group">
+                            <div class="w-16 h-16 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-2xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-pink-500/50 transition-all">
+                                <i class="fab fa-apple text-3xl text-white"></i>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/producedbyj/" target="_blank" class="group">
+                            <div class="w-16 h-16 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-2xl flex items-center justify-center hover-lift group-hover:shadow-2xl group-hover:shadow-purple-500/50 transition-all">
+                                <i class="fab fa-instagram text-3xl text-white"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Merch Preview Section -->
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-3xl p-6 hover-lift neon-border">
+                        <div class="text-center mb-6">
+                            <h3 class="text-2xl font-bold text-purple-300 mb-2">Latest Merch</h3>
+                            <p class="text-gray-400 text-sm">Exclusive sample packs & merchandise</p>
+                        </div>
+                        
+                        <!-- Sample Pack Preview -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="group cursor-pointer card-3d" onclick="openProductModal('@producedbyj - Breaks byJ. Vol. 1', 'images/products/sample-packs/breaks-vol-1.png', 'High-energy breakbeat samples and loops - Digital download', '$19.99', 'sample-pack-1')">
+                                <div class="relative overflow-hidden rounded-2xl glass-effect hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-500">
+                                    <img src="images/products/sample-packs/breaks-vol-1.png" alt="Breaks Sample Pack" class="w-full h-24 object-cover object-center">
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                                    <div class="absolute top-2 right-2 bg-gradient-to-r from-red-600 to-orange-600 text-white px-2 py-1 rounded-full text-xs font-bold pulse-glow">$19.99</div>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="text-white font-bold text-sm mb-1">Breaks byJ. Vol. 1</h4>
+                                    <p class="text-gray-300 text-xs">High-energy breakbeat samples</p>
+                                </div>
+                            </div>
+                            
+                            <div class="group cursor-pointer card-3d" onclick="openProductModal('@producedbyj - Melodies byJ. - III', 'images/products/sample-packs/melodies.png', 'Melodic samples and chord progressions - Digital download', '$19.99', 'sample-pack-2')">
+                                <div class="relative overflow-hidden rounded-2xl glass-effect hover:shadow-2xl hover:shadow-teal-500/40 transition-all duration-500">
+                                    <img src="images/products/sample-packs/melodies.png" alt="Melodies Sample Pack" class="w-full h-24 object-cover object-center">
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                                    <div class="absolute top-2 right-2 bg-gradient-to-r from-teal-600 to-blue-600 text-white px-2 py-1 rounded-full text-xs font-bold pulse-glow">$19.99</div>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="text-white font-bold text-sm mb-1">Melodies byJ. - III</h4>
+                                    <p class="text-gray-300 text-xs">Melodic samples & chord progressions</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Merch CTA -->
+                        <div class="text-center">
+                            <a href="merch.html" class="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-6 rounded-full transition-all text-sm shadow-lg hover:shadow-purple-500/50">
+                                <i class="fas fa-shopping-bag mr-2"></i>
+                                Shop All Merch
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Releases Section -->
+            <div class="mt-16 max-w-7xl mx-auto reveal-on-scroll" style="animation-delay: 0.4s;">
+                <div class="glass-effect rounded-3xl p-6 hover-lift neon-border">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-purple-300 mb-2">Recent Releases</h3>
+                        <p class="text-gray-400 text-sm">Click any album to listen on Spotify</p>
+                    </div>
+                    <div id="discography-loading" class="text-center py-12">
+                        <div class="inline-block">
+                            <div class="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                        </div>
+                        <p class="text-gray-400 mt-4 font-medium">Loading releases...</p>
+                    </div>
+                    <div id="discography-content" class="hidden">
+                        <!-- Discography content will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-20 reveal-on-scroll" style="animation-delay: 0.4s;">
+                <a href="#about" class="magnetic-button inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-500 hover:via-pink-500 hover:to-blue-500 text-white font-bold py-5 px-12 rounded-full transition-all text-lg shadow-2xl shadow-purple-500/50">
+                    Discover My Story
+                    <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div class="flex flex-col items-center space-y-2 animate-bounce">
+                <div class="w-6 h-10 border-2 border-purple-400 rounded-full flex justify-center pt-2">
+                    <div class="w-1 h-2 bg-purple-400 rounded-full"></div>
+                </div>
+                <p class="text-purple-400 text-xs font-medium">Scroll</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section - NEW -->
+    <section class="py-12 md:py-20 bg-black relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-transparent"></div>
+        <div class="container mx-auto px-4 md:px-6 relative z-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
+                <div class="text-center glass-effect rounded-2xl p-4 md:p-8 hover-lift">
+                    <div class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2 break-words">30M+</div>
+                    <p class="text-gray-400 font-medium text-sm md:text-base">Streams</p>
+                </div>
+                <div class="text-center glass-effect rounded-2xl p-4 md:p-8 hover-lift">
+                    <div class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2 break-words">100+</div>
+                    <p class="text-gray-400 font-medium text-sm md:text-base">Tracks</p>
+                </div>
+                <div class="text-center glass-effect rounded-2xl p-4 md:p-8 hover-lift">
+                    <div class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent mb-2 break-words">15+</div>
+                    <p class="text-gray-400 font-medium text-sm md:text-base">Artists</p>
+                </div>
+                <div class="text-center glass-effect rounded-2xl p-4 md:p-8 hover-lift">
+                    <div class="text-3xl md:text-5xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent mb-2 break-words">10+</div>
+                    <p class="text-gray-400 font-medium text-sm md:text-base">Years</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Biography Section -->
+    <section id="about" class="py-20 bg-gradient-to-b from-purple-900/20 to-black relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute top-20 right-20 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 floating"></div>
+            <div class="absolute bottom-20 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 floating" style="animation-delay: 4s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-6xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        About byJ.
+                    </h2>
+                    <div class="h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+                </div>
+                
+                <div class="glass-effect rounded-3xl p-10 md:p-16 card-3d neon-border">
+                    <div class="space-y-8">
+                        <p class="text-2xl text-gray-200 leading-relaxed font-light">
+                            From <span class="text-purple-400 font-semibold">Baltimore to Los Angeles</span>, byJ. is a music producer and audio engineer who treats sound like storytelling – flipping dusty samples, layering live instruments, and pushing mixes until they feel both <span class="text-pink-400 font-semibold">cinematic and raw</span>.
+                        </p>
+                        
+                        <div class="h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+                        
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            My sound stretches across <span class="text-purple-300 font-medium">Hip Hop, R&B, Soul, Jazz, and Rock</span>, but it always circles back to sample-based production. I call myself a <span class="text-pink-400 font-semibold">"Sound Recycler"</span> because I love taking old songs and forgotten noises, then reshaping them into something modern and fresh. Imperfections matter – crackle, swing, subtle distortion – that's where the human side of music lives.
+                        </p>
+                        
+                        <div class="glass-effect rounded-2xl p-6 border-l-4 border-purple-500">
+                            <p class="text-lg text-gray-300 leading-relaxed">
+                                With <span class="text-pink-400 font-bold text-2xl">30 million+ streams worldwide</span>, I've been blessed to work with artists like <span class="text-purple-300 font-medium">Jazz Cartier, Lil Rekk, Jayy Grams, Ben Beal, B-Jay Banks, and Sure Shot</span>. My own series, <span class="text-purple-300 italic">"the first"</span>, explores love, nostalgia, and growth – drawing from real experiences of connection and memory.
+                            </p>
+                        </div>
+                        
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            Whether it's a heavy hip hop cut or a soulful ballad, I aim to create something that feels both classic and new – music that <span class="text-blue-400 font-medium">bridges eras, genres, and moods</span>, meant to last.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section id="connect" class="py-20 bg-gradient-to-b from-black to-purple-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-6xl font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+                    Let's Connect
+                </h2>
+                <div class="h-1 w-32 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mx-auto rounded-full"></div>
+                <p class="text-xl text-gray-300 mt-6 max-w-2xl mx-auto">
+                    Follow the journey, stay updated with new releases, and be part of the sound recycling movement
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <a href="https://www.instagram.com/producedbyj/" target="_blank" class="glass-effect rounded-3xl p-10 hover-lift neon-border group text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <i class="fab fa-instagram text-4xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-3 text-white">Instagram</h3>
+                    <p class="text-gray-400 mb-4 text-lg">Behind the scenes & updates</p>
+                    <span class="text-purple-400 font-bold text-xl">@producedbyj</span>
+                </a>
+                
+                <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws?si=91Ff7vFWQMSkD2h9km0f1w" target="_blank" class="glass-effect rounded-3xl p-10 hover-lift neon-border group text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <i class="fab fa-spotify text-4xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-3 text-white">Spotify</h3>
+                    <p class="text-gray-400 mb-4 text-lg">Stream the full catalog</p>
+                    <span class="text-green-400 font-bold text-xl">30M+ Streams</span>
+                </a>
+
+                <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="glass-effect rounded-3xl p-10 hover-lift neon-border group text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        <i class="fab fa-apple text-4xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-3 text-white">Apple Music</h3>
+                    <p class="text-gray-400 mb-4 text-lg">Listen on Apple Music</p>
+                    <span class="text-pink-400 font-bold text-xl">Stream Now</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 id="modal-title" class="text-2xl font-bold text-gray-800"></h2>
+                        <button onclick="closeProductModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <img id="modal-image" src="" alt="Product" class="w-full h-64 object-cover rounded-lg">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p id="modal-description" class="text-gray-600"></p>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <span id="modal-price" class="text-2xl font-bold text-gray-800"></span>
+                        <button onclick="addToCartFromModal()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition">
+                            Add to Cart
+                        </button>
+                    </div>
+                    
+                    <div class="text-center">
+                        <a href="merch.html" class="text-purple-600 hover:text-purple-700 font-medium">
+                            View All Products →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-purple-500/20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+                <h3 class="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    byJ.
+                </h3>
+                <p class="text-gray-400 text-lg">Sound Recycler • Transforming sounds into sonic experiences</p>
+            </div>
+            
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws?si=91Ff7vFWQMSkD2h9km0f1w" target="_blank" class="text-gray-400 hover:text-green-500 transition-all hover:scale-125 text-2xl">
+                    <i class="fab fa-spotify"></i>
+                </a>
+                <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="text-gray-400 hover:text-pink-500 transition-all hover:scale-125 text-2xl">
+                    <i class="fab fa-apple"></i>
+                </a>
+                <a href="https://www.instagram.com/producedbyj/" target="_blank" class="text-gray-400 hover:text-pink-500 transition-all hover:scale-125 text-2xl">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            
+            <div class="text-center">
+                <p class="text
+                -gray-500">&copy; 2025 byJ. Sound Recycler. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Secure Spotify API Helper Functions (Vercel Functions)
+        class SpotifyAPI {
+            constructor() {
+                this.baseURL = '/api';
+            }
+
+            async makeRequest(endpoint) {
+                const response = await fetch(`${this.baseURL}${endpoint}`);
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                return await response.json();
+            }
+
+            async getLatestRelease() {
+                return await this.makeRequest('/spotify-latest');
+            }
+
+            async getDiscography() {
+                return await this.makeRequest('/spotify-discography');
+            }
+        }
+
+        // Initialize Spotify API
+        const spotifyAPI = new SpotifyAPI();
+
+        // Product Modal Functions
+        let currentModalProduct = null;
+
+        function openProductModal(title, image, description, price, id) {
+            const modal = document.getElementById('product-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalPrice = document.getElementById('modal-price');
+
+            modalImage.src = image;
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modalPrice.textContent = price;
+            
+            currentModalProduct = { id, title, price: parseFloat(price.replace('$', '')) };
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentModalProduct = null;
+        }
+
+        function addToCartFromModal() {
+            if (currentModalProduct) {
+                // Redirect to merch page and open cart sidebar
+                window.location.href = `merch.html?product=${currentModalProduct.id}&openCart=true`;
+            }
+        }
+
+        // UI Helper Functions
+        function showLoading(elementId) {
+            const loading = document.getElementById(elementId + '-loading');
+            const content = document.getElementById(elementId + '-content');
+            if (loading) loading.classList.remove('hidden');
+            if (content) content.classList.add('hidden');
+        }
+
+        function showContent(elementId) {
+            const loading = document.getElementById(elementId + '-loading');
+            const content = document.getElementById(elementId + '-content');
+            if (loading) loading.classList.add('hidden');
+            if (content) content.classList.remove('hidden');
+        }
+
+        function createAlbumCard(album, isLatest = false, isCompact = false) {
+            const imageUrl = album.images[0]?.url || 'https://via.placeholder.com/300x300/a855f7/FFFFFF?text=No+Image';
+            const spotifyUrl = album.external_urls.spotify;
+            const releaseDate = new Date(album.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+            const albumType = album.album_type.charAt(0).toUpperCase() + album.album_type.slice(1);
+            
+            // Check if album has physical release (case-insensitive match)
+            const hasPhysicalRelease = album.name.toLowerCase().includes('believe it or not');
+            const physicalReleaseUrl = hasPhysicalRelease ? 'https://elasticstage.com/byj/releases/believe-it-or-not-album' : null;
+
+            if (isCompact) {
+                return `
+                    <div class="group relative card-3d">
+                        <div class="cursor-pointer" onclick="window.open('${spotifyUrl}', '_blank')">
+                            <div class="relative overflow-hidden rounded-2xl glass-effect hover:shadow-2xl hover:shadow-purple-500/40 transition-all duration-500">
+                                <img 
+                                    src="${imageUrl}" 
+                                    alt="${album.name}" 
+                                    class="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
+                                    loading="lazy"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                    <div class="absolute bottom-0 left-0 right-0 p-4">
+                                        <h3 class="text-white font-bold text-sm mb-1 truncate">${album.name}</h3>
+                                        <p class="text-gray-300 text-xs mb-2">${albumType} • ${releaseDate}</p>
+                                        <div class="flex items-center text-green-400 text-xs">
+                                            <i class="fab fa-spotify mr-1"></i>
+                                            <span>Play</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                ${isLatest ? '<div class="absolute top-3 right-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1 rounded-full text-xs font-bold pulse-glow">Latest</div>' : ''}
+                                ${hasPhysicalRelease ? '<div class="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-1 rounded-full text-xs font-bold pulse-glow"><i class="fas fa-compact-disc mr-1"></i>Vinyl/CD</div>' : ''}
+                            </div>
+                        </div>
+                        ${hasPhysicalRelease ? `
+                            <a href="${physicalReleaseUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="absolute bottom-2 left-2 right-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-xs font-bold py-2 px-3 rounded-full text-center transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
+                                <i class="fas fa-shopping-cart mr-1"></i>Buy Physical
+                            </a>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="group relative card-3d">
+                    <div class="cursor-pointer" onclick="window.open('${spotifyUrl}', '_blank')">
+                        <div class="relative overflow-hidden rounded-3xl glass-effect neon-border transition-all duration-500">
+                            <img 
+                                src="${imageUrl}" 
+                                alt="${album.name}" 
+                                class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                                loading="lazy"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                <div class="absolute bottom-0 left-0 right-0 p-6">
+                                    <h3 class="text-white font-bold text-xl mb-2 truncate">${album.name}</h3>
+                                    <p class="text-gray-300 text-sm mb-3">${albumType} • ${releaseDate}</p>
+                                    <div class="flex items-center text-green-400 font-medium">
+                                        <i class="fab fa-spotify mr-2 text-lg"></i>
+                                        <span>Listen on Spotify</span>
+                                    </div>
+                                </div>
+                            </div>
+                            ${isLatest ? '<div class="absolute top-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-bold pulse-glow">Latest Release</div>' : ''}
+                            ${hasPhysicalRelease ? '<div class="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-full text-sm font-bold pulse-glow"><i class="fas fa-compact-disc mr-1"></i>Vinyl/CD</div>' : ''}
+                        </div>
+                    </div>
+                    ${hasPhysicalRelease ? `
+                        <a href="${physicalReleaseUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="absolute bottom-4 left-4 right-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold py-3 px-4 rounded-full text-center transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 shadow-lg">
+                            <i class="fas fa-shopping-cart mr-2"></i>Buy Physical Release
+                        </a>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Load Recent Releases (Featured releases)
+        async function loadDiscography() {
+            try {
+                showLoading('discography');
+                const albumsData = await spotifyAPI.getDiscography();
+                
+                // Sort albums by release date in descending order (newest first)
+                const albums = albumsData.items.sort((a, b) => {
+                    const dateA = new Date(a.release_date);
+                    const dateB = new Date(b.release_date);
+                    return dateB - dateA;
+                });
+                
+                // Show first 6 albums in compact grid for recent releases section
+                const featuredAlbums = albums.slice(0, 6);
+                const content = `
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        ${featuredAlbums.map((album, index) => createAlbumCard(album, index === 0, true)).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('discography-content').innerHTML = content;
+                showContent('discography');
+            } catch (error) {
+                console.error('Error loading discography:', error);
+                document.getElementById('discography-content').innerHTML = `
+                    <div class="text-center text-red-400 py-8">
+                        <i class="fas fa-exclamation-triangle text-3xl mb-3"></i>
+                        <p>Unable to load releases. Please try again later.</p>
+                    </div>
+                `;
+                showContent('discography');
+            }
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Enhanced parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.floating');
+            parallaxElements.forEach((el, index) => {
+                const speed = 0.3 + (index * 0.1);
+                el.style.transform = `translate(${Math.sin(scrolled * 0.001 + index) * 50}px, ${scrolled * speed}px) rotate(${scrolled * 0.05}deg)`;
+            });
+
+            // Navbar background on scroll
+            const nav = document.querySelector('nav');
+            if (scrolled > 50) {
+                nav.style.background = 'rgba(0, 0, 0, 0.9)';
+                nav.style.borderBottom = '1px solid rgba(168, 85, 247, 0.3)';
+            } else {
+                nav.style.background = 'rgba(0, 0, 0, 0.7)';
+                nav.style.borderBottom = '1px solid rgba(168, 85, 247, 0.2)';
+            }
+        });
+
+        // Intersection Observer for reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(section);
+            });
+
+            // Immediately show hero section
+            const heroSection = document.querySelector('section');
+            if (heroSection) {
+                heroSection.style.opacity = '1';
+                heroSection.style.transform = 'translateY(0)';
+            }
+        });
+
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic-button').forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+            });
+
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translate(0, 0) scale(1)';
+            });
+        });
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('menu-open');
+                    // Toggle hamburger icon animation
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileMenu.classList.contains('menu-open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close mobile menu when clicking on links
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('menu-open');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+        });
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load Spotify data
+            await loadDiscography();
+        });
+    </script>
+</body>
+</html>

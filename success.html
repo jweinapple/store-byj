@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - byJ. Sound Recycler</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .floating { animation: float 6s ease-in-out infinite; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Mobile Menu Animations */
+        #mobile-menu {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #mobile-menu.menu-open {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #mobile-menu a {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #mobile-menu.menu-open a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        #mobile-menu.menu-open a:nth-child(1) { transition-delay: 0.1s; }
+        #mobile-menu.menu-open a:nth-child(2) { transition-delay: 0.15s; }
+        #mobile-menu.menu-open a:nth-child(3) { transition-delay: 0.2s; }
+        #mobile-menu.menu-open a:nth-child(4) { transition-delay: 0.25s; }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="text-2xl font-bold">
+                    byJ.
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-purple-400 transition">Home</a>
+                    <a href="index.html#discography" class="hover:text-purple-400 transition">Music</a>
+                    <a href="merch.html" class="hover:text-purple-400 transition">Merch</a>
+                    <a href="index.html#about" class="hover:text-purple-400 transition">About</a>
+                </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden bg-black/95 backdrop-blur-lg border-t border-gray-800">
+                <div class="container mx-auto px-6 py-6 space-y-4">
+                    <a href="index.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Home</a>
+                    <a href="index.html#discography" class="block text-white hover:text-purple-400 transition py-3 text-lg">Music</a>
+                    <a href="merch.html" class="block text-white hover:text-purple-400 transition py-3 text-lg">Merch</a>
+                    <a href="index.html#about" class="block text-white hover:text-purple-400 transition py-3 text-lg">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 min-h-screen flex items-center justify-center">
+        <div class="container mx-auto px-6 py-12">
+            <div class="max-w-2xl mx-auto text-center">
+                <!-- Success Icon -->
+                <div class="mb-8">
+                    <div class="inline-block w-24 h-24 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-check text-4xl text-white"></i>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                    Payment Successful!
+                </h1>
+                
+                <p class="text-xl text-gray-300 mb-8">
+                    Thank you for your purchase! Your order has been confirmed and you'll receive a confirmation email shortly.
+                </p>
+
+                <!-- Order Details -->
+                <div class="glass-effect rounded-2xl p-8 hover-lift mb-8">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-300">Order Details</h2>
+                    <div class="space-y-2 text-gray-300">
+                        <p><strong>Order ID:</strong> <span id="order-id">Loading...</span></p>
+                        <p><strong>Amount:</strong> <span id="order-amount">Loading...</span></p>
+                        <p><strong>Status:</strong> <span class="text-green-400">Confirmed</span></p>
+                    </div>
+                </div>
+
+                <!-- Digital Downloads Section -->
+                <div id="downloads-section" class="glass-effect rounded-2xl p-8 hover-lift mb-8" style="display: none;">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-300">
+                        <i class="fas fa-download mr-2"></i>
+                        Your Digital Downloads
+                    </h2>
+                    <div id="download-links" class="space-y-4">
+                        <!-- Download links will be populated here -->
+                    </div>
+                    <div class="mt-4 text-sm text-gray-400">
+                        <p><i class="fas fa-info-circle mr-1"></i> Downloads are valid for 30 days and can be used up to 5 times.</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="index.html" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-home mr-2"></i>
+                        Back to Home
+                    </a>
+                    <a href="index.html#discography" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-music mr-2"></i>
+                        Listen to Music
+                    </a>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="mt-12 text-center text-gray-400">
+                    <p class="mb-4">
+                        <i class="fas fa-envelope mr-2"></i>
+                        Check your email for order confirmation and tracking details
+                    </p>
+                    <p class="text-sm">
+                        Questions? Contact us at <a href="mailto:producedbyjjj@gmail.com" class="text-purple-400 hover:text-purple-300">producedbyjjj@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-800">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-6">
+                <h3 class="text-3xl font-bold mb-2">
+                    byJ.<span class="text-purple-500">Sound Recycler</span>
+                </h3>
+                <p class="text-gray-400">Transforming sounds into sonic experiences</p>
+            </div>
+            <p class="text-gray-500">&copy; 2025 byJ. Sound Recycler. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+
+        // Display order information
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('menu-open');
+                    // Toggle hamburger icon animation
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileMenu.classList.contains('menu-open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close mobile menu when clicking on links
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('menu-open');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+            
+            if (sessionId) {
+                try {
+                    // Fetch session details from your backend
+                    const response = await fetch(`/api/get-session-details?session_id=${sessionId}`);
+                    const sessionData = await response.json();
+                    
+                    document.getElementById('order-id').textContent = sessionId;
+                    document.getElementById('order-amount').textContent = `$${sessionData.amount_total.toFixed(2)}`;
+                    
+                    // Fetch download links for digital products
+                    try {
+                        const downloadsResponse = await fetch(`/api/order-downloads/${sessionId}`);
+                        const downloadsData = await downloadsResponse.json();
+                        
+                        if (downloadsData.downloads && downloadsData.downloads.length > 0) {
+                            const downloadsSection = document.getElementById('downloads-section');
+                            const downloadLinks = document.getElementById('download-links');
+                            
+                            downloadsSection.style.display = 'block';
+                            
+                            downloadsData.downloads.forEach(download => {
+                                const downloadDiv = document.createElement('div');
+                                downloadDiv.className = 'bg-gray-800 rounded-lg p-4 border border-gray-700';
+                                downloadDiv.innerHTML = `
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-white">${download.productName}</h3>
+                                            <p class="text-sm text-gray-400">Downloads: ${download.downloadCount}/${download.maxDownloads}</p>
+                                        </div>
+                                        <a href="/api/download/${download.downloadToken}" 
+                                           class="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold py-2 px-4 rounded-full transition-all duration-300 hover:scale-105">
+                                            <i class="fas fa-download mr-2"></i>
+                                            Download
+                                        </a>
+                                    </div>
+                                `;
+                                downloadLinks.appendChild(downloadDiv);
+                            });
+                        }
+                    } catch (downloadError) {
+                        console.error('Error fetching downloads:', downloadError);
+                    }
+                } catch (error) {
+                    console.error('Error fetching session details:', error);
+                    document.getElementById('order-id').textContent = sessionId;
+                    document.getElementById('order-amount').textContent = 'Amount not available';
+                }
+            } else {
+                document.getElementById('order-id').textContent = 'Demo Order';
+                document.getElementById('order-amount').textContent = 'Amount not available';
+            }
+        });
+    </script>
+</body>
+</html>
+
+

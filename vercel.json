@@ -1,0 +1,40 @@
+{
+  "buildCommand": "echo 'No build step required'",
+  "outputDirectory": ".",
+  "functions": {
+    "api/spotify-discography.js": {
+      "maxDuration": 10
+    },
+    "api/spotify-latest.js": {
+      "maxDuration": 10
+    },
+    "api/spotify-random-track.js": {
+      "maxDuration": 10
+    },
+    "api/create-checkout-session.js": {
+      "maxDuration": 10
+    },
+    "api/stripe-webhook.js": {
+      "maxDuration": 10,
+      "includeFiles": "**"
+    },
+    "api/stripe-publishable-key.js": {
+      "maxDuration": 10
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Stripe-Signature"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+name: Keep Supabase Active
+
+on:
+  schedule:
+    - cron: '0 12 */5 * *'
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Ping health endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X GET "${{ secrets.VERCEL_URL }}/api/health" \
+            -H "Authorization: Bearer ${{ secrets.HEALTH_CHECK_SECRET }}")
+          
+          if [ $response -eq 200 ]; then
+            echo "✅ Supabase pinged successfully"
+          else
+            echo "❌ Failed with status: $response"
+            exit 1
+          fi

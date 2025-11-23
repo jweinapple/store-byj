@@ -1,0 +1,144 @@
+import express from 'express';
+import path from 'path';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+
+// JSON and URL-encoded parsers for most routes (excluding webhook)
+app.use((req, res, next) => {
+    if (req.path === '/api/stripe-webhook') {
+        return next();
+    }
+    express.json()(req, res, next);
+});
+
+app.use((req, res, next) => {
+    if (req.path === '/api/stripe-webhook') {
+        return next();
+    }
+    express.urlencoded({ extended: true })(req, res, next);
+});
+
+// Serve static files
+app.use(express.static(__dirname));
+
+// Helper function to create a buffer-like function for webhook
+function createBufferFunction(req) {
+    return async function buffer() {
+        if (Buffer.isBuffer(req.body)) {
+            return req.body;
+        }
+        if (typeof req.body === 'string') {
+            return Buffer.from(req.body, 'utf8');
+        }
+        return Buffer.from(JSON.stringify(req.body || {}), 'utf8');
+    };
+}
+
+// Helper function to load and execute API handlers
+async function loadHandler(handlerPath, req, res) {
+    try {
+        // Dynamic import for ES modules
+        const handlerModule = await import(handlerPath);
+        const handler = handlerModule.default;
+        
+        // For webhook routes, provide buffer function
+        let bufferFn = null;
+        if (req.url.includes('stripe-webhook')) {
+            bufferFn = createBufferFunction(req);
+        }
+        
+        // Create a mock req/res that matches Vercel's format
+        const vercelReq = {
+            method: req.method,
+            headers: req.headers,
+            body: req.body,
+            query: req.query,
+            url: req.url,
+            // Add buffer function for webhook
+            ...(bufferFn && { buffer: bufferFn })
+        };
+        
+        const vercelRes = {
+            statusCode: 200,
+            headers: {},
+            setHeader: function(key, value) {
+                this.headers[key] = value;
+                res.setHeader(key, value);
+            },
+            status: function(code) {
+                this.statusCode = code;
+                return this;
+            },
+            json: function(data) {
+                res.status(this.statusCode).json(data);
+            },
+            end: function() {
+                res.status(this.statusCode).end();
+            }
+        };
+        
+        // Execute the handler
+        await handler(vercelReq, vercelRes);
+    } catch (error) {
+        console.error('Error loading handler:', error);
+        res.status(500).json({ 
+            error: 'Internal server error',
+            message: error.message 
+        });
+    }
+}
+
+// API Routes
+app.all('/api/spotify-discography', async (req, res) => {
+    await loadHandler('./api/spotify-discography.js', req, res);
+});
+
+app.all('/api/spotify-latest', async (req, res) => {
+    await loadHandler('./api/spotify-latest.js', req, res);
+});
+
+app.all('/api/spotify-random-track', async (req, res) => {
+    await loadHandler('./api/spotify-random-track.js', req, res);
+});
+
+app.all('/api/create-checkout-session', async (req, res) => {
+    await loadHandler('./api/create-checkout-session.js', req, res);
+});
+
+// Webhook route needs raw body - use express.raw middleware
+app.all('/api/stripe-webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    await loadHandler('./api/stripe-webhook.js', req, res);
+});
+
+app.all('/api/stripe-publishable-key', async (req, res) => {
+    await loadHandler('./api/stripe-publishable-key.js', req, res);
+});
+
+app.all('/api/get-session-details', async (req, res) => {
+    await loadHandler('./api/get-session-details.js', req, res);
+});
+
+// Fallback: serve index.html for root
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 Local server running on http://localhost:${PORT}`);
+    console.log(`📁 Serving files from: ${__dirname}`);
+    console.log(`🔌 API endpoints available at: http://localhost:${PORT}/api/*`);
+});
