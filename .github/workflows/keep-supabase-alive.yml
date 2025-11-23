@@ -2,8 +2,9 @@ name: Keep Supabase Active
 
 on:
   schedule:
-    - cron: '0 12 */5 * *'
-  workflow_dispatch:
+    # Run daily at 9:00 AM UTC (adjust timezone as needed)
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allows manual triggering from GitHub UI
 
 jobs:
   ping-supabase:
@@ -12,13 +13,26 @@ jobs:
     steps:
       - name: Ping health endpoint
         run: |
+          # Use the actual Vercel URL or fallback to secret
+          VERCEL_URL="${VERCEL_URL:-https://byj.vercel.app}"
+          HEALTH_SECRET="${{ secrets.HEALTH_CHECK_SECRET }}"
+          
+          if [ -z "$HEALTH_SECRET" ]; then
+            echo "❌ HEALTH_CHECK_SECRET secret is not set in GitHub"
+            exit 1
+          fi
+          
+          echo "🔍 Pinging: $VERCEL_URL/api/health"
           response=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X GET "${{ secrets.VERCEL_URL }}/api/health" \
-            -H "Authorization: Bearer ${{ secrets.HEALTH_CHECK_SECRET }}")
+            -X GET "$VERCEL_URL/api/health" \
+            -H "Authorization: Bearer $HEALTH_SECRET")
+          
+          echo "📊 Response status: $response"
           
           if [ $response -eq 200 ]; then
-            echo "✅ Supabase pinged successfully"
+            echo "✅ Supabase pinged successfully - database is active"
           else
             echo "❌ Failed with status: $response"
+            echo "⚠️  Check that HEALTH_CHECK_SECRET is set correctly in GitHub Secrets"
             exit 1
           fi
