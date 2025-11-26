@@ -27,13 +27,36 @@ export default async function handler(req, res) {
         } else {
             // Get all products or products by category (v1 - v2 catalog not available yet)
             const products = await getProducts(category_id || null);
+            
+            // Ensure products is an array
+            if (!Array.isArray(products)) {
+                console.error('Products is not an array:', products);
+                res.status(500).json({ 
+                    success: false,
+                    error: 'Invalid products response format', 
+                    message: 'Products data is not in expected format'
+                });
+                return;
+            }
+            
             res.status(200).json({ success: true, products });
         }
     } catch (error) {
         console.error('Error fetching Printful products:', error);
+        
+        // Check if it's an authentication error
+        const isAuthError = error.message && (
+            error.message.includes('OAuth token') || 
+            error.message.includes('unauthorized') ||
+            error.message.includes('401') ||
+            error.message.includes('authentication')
+        );
+        
         res.status(500).json({ 
-            error: 'Failed to fetch products', 
-            message: error.message 
+            success: false,
+            error: isAuthError ? 'Authentication failed' : 'Failed to fetch products', 
+            message: error.message || 'Unknown error occurred',
+            requiresAuth: isAuthError
         });
     }
 }

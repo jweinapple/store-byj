@@ -35,15 +35,41 @@
             text-decoration: underline;
         }
         
-        /* Mobile Menu */
+        /* Mobile Menu - Slide from right */
         #mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            z-index: 1000;
+            transition: right 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
         }
         
         #mobile-menu.menu-open {
-            max-height: 500px;
+            right: 0;
+        }
+        
+        /* Overlay when menu is open */
+        #mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        #mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
@@ -76,12 +102,21 @@
                 </div>
             </div>
             
+            <!-- Mobile Menu Overlay -->
+            <div id="mobile-menu-overlay"></div>
+            
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="md:hidden border-t border-gray-200">
-                <div class="px-6 py-4 space-y-4">
-                    <a href="music.html" class="block py-2">MUSIC</a>
-                    <a href="merch.html" class="block py-2">MERCH / SAMPLE PACKS</a>
-                    <a href="contact.html" class="block py-2">CONTACT</a>
+            <div id="mobile-menu" class="md:hidden">
+                <div class="px-6 py-8 space-y-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <img src="images/other/byj_logo copy.png" alt="byJ." class="h-6 w-auto">
+                        <button id="mobile-menu-close" class="text-gray-600 hover:text-black">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <a href="music.html" class="block py-3 text-lg border-b border-gray-200">MUSIC</a>
+                    <a href="merch.html" class="block py-3 text-lg border-b border-gray-200">MERCH / SAMPLE PACKS</a>
+                    <a href="contact.html" class="block py-3 text-lg border-b border-gray-200">CONTACT</a>
                 </div>
             </div>
         </div>
@@ -126,28 +161,51 @@
         document.addEventListener('DOMContentLoaded', () => {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const closeBtn = document.getElementById('mobile-menu-close');
+            
+            function toggleMenu() {
+                mobileMenu.classList.toggle('menu-open');
+                if (overlay) {
+                    overlay.classList.toggle('active');
+                }
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mobileMenu.classList.contains('menu-open')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            function closeMenu() {
+                mobileMenu.classList.remove('menu-open');
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+                document.body.style.overflow = '';
+            }
             
             if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('menu-open');
-                    const icon = mobileMenuBtn.querySelector('i');
-                    if (mobileMenu.classList.contains('menu-open')) {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-times');
-                    } else {
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
-                    }
-                });
+                mobileMenuBtn.addEventListener('click', toggleMenu);
+                
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', closeMenu);
+                }
+                
+                if (overlay) {
+                    overlay.addEventListener('click', closeMenu);
+                }
                 
                 const mobileLinks = mobileMenu.querySelectorAll('a');
                 mobileLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.remove('menu-open');
-                        const icon = mobileMenuBtn.querySelector('i');
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
-                    });
+                    link.addEventListener('click', closeMenu);
                 });
             }
         });

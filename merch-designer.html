@@ -223,6 +223,37 @@
             canvas.on('object:modified', function(e) {
                 console.log('Object modified');
             });
+
+            // Update text properties when object is selected
+            canvas.on('selection:created', function(e) {
+                const obj = e.selected[0];
+                if (obj && (obj.type === 'text' || obj.type === 'i-text')) {
+                    const textColorInput = document.getElementById('text-color');
+                    const fontSizeInput = document.getElementById('font-size');
+                    const fontSizeValue = document.getElementById('font-size-value');
+                    const fontFamilyInput = document.getElementById('font-family');
+                    
+                    if (textColorInput) textColorInput.value = obj.fill || '#000000';
+                    if (fontSizeInput) fontSizeInput.value = obj.fontSize || 20;
+                    if (fontSizeValue) fontSizeValue.textContent = (obj.fontSize || 20) + 'px';
+                    if (fontFamilyInput) fontFamilyInput.value = obj.fontFamily || 'Arial';
+                }
+            });
+
+            canvas.on('selection:updated', function(e) {
+                const obj = e.selected[0];
+                if (obj && (obj.type === 'text' || obj.type === 'i-text')) {
+                    const textColorInput = document.getElementById('text-color');
+                    const fontSizeInput = document.getElementById('font-size');
+                    const fontSizeValue = document.getElementById('font-size-value');
+                    const fontFamilyInput = document.getElementById('font-family');
+                    
+                    if (textColorInput) textColorInput.value = obj.fill || '#000000';
+                    if (fontSizeInput) fontSizeInput.value = obj.fontSize || 20;
+                    if (fontSizeValue) fontSizeValue.textContent = (obj.fontSize || 20) + 'px';
+                    if (fontFamilyInput) fontFamilyInput.value = obj.fontFamily || 'Arial';
+                }
+            });
         }
 
         // Load products from Printful API
@@ -315,20 +346,24 @@
         }
 
         // Add text to canvas
-        document.getElementById('add-text-btn').addEventListener('click', function() {
-            const text = new fabric.Text('Your Text Here', {
-                left: canvas.width / 2,
-                top: canvas.height / 2,
-                fontSize: parseInt(document.getElementById('font-size').value),
-                fontFamily: document.getElementById('font-family').value,
-                fill: document.getElementById('text-color').value,
-                originX: 'center',
-                originY: 'center'
+        const addTextBtn = document.getElementById('add-text-btn');
+        if (addTextBtn) {
+            addTextBtn.addEventListener('click', function() {
+                if (!canvas) return;
+                const text = new fabric.Text('Your Text Here', {
+                    left: canvas.width / 2,
+                    top: canvas.height / 2,
+                    fontSize: parseInt(document.getElementById('font-size')?.value || 20),
+                    fontFamily: document.getElementById('font-family')?.value || 'Arial',
+                    fill: document.getElementById('text-color')?.value || '#000000',
+                    originX: 'center',
+                    originY: 'center'
+                });
+                canvas.add(text);
+                canvas.setActiveObject(text);
+                canvas.renderAll();
             });
-            canvas.add(text);
-            canvas.setActiveObject(text);
-            canvas.renderAll();
-        });
+        }
 
         // Upload image
         document.getElementById('image-upload').addEventListener('change', function(e) {
@@ -357,46 +392,34 @@
             }
         });
 
-        // Update text properties when object is selected
-        canvas.on('selection:created', function(e) {
-            const obj = e.selected[0];
-            if (obj.type === 'text' || obj.type === 'i-text') {
-                document.getElementById('text-color').value = obj.fill;
-                document.getElementById('font-size').value = obj.fontSize;
-                document.getElementById('font-size-value').textContent = obj.fontSize + 'px';
-                document.getElementById('font-family').value = obj.fontFamily;
-            }
-        });
-
-        canvas.on('selection:updated', function(e) {
-            const obj = e.selected[0];
-            if (obj.type === 'text' || obj.type === 'i-text') {
-                document.getElementById('text-color').value = obj.fill;
-                document.getElementById('font-size').value = obj.fontSize;
-                document.getElementById('font-size-value').textContent = obj.fontSize + 'px';
-                document.getElementById('font-family').value = obj.fontFamily;
-            }
-        });
-
         // Update text color
-        document.getElementById('text-color').addEventListener('change', function(e) {
-            const activeObject = canvas.getActiveObject();
-            if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
-                activeObject.set('fill', e.target.value);
-                canvas.renderAll();
-            }
-        });
+        const textColorInput = document.getElementById('text-color');
+        if (textColorInput) {
+            textColorInput.addEventListener('change', function(e) {
+                if (!canvas) return;
+                const activeObject = canvas.getActiveObject();
+                if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
+                    activeObject.set('fill', e.target.value);
+                    canvas.renderAll();
+                }
+            });
+        }
 
         // Update font size
-        document.getElementById('font-size').addEventListener('input', function(e) {
-            const size = parseInt(e.target.value);
-            document.getElementById('font-size-value').textContent = size + 'px';
-            const activeObject = canvas.getActiveObject();
-            if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
-                activeObject.set('fontSize', size);
-                canvas.renderAll();
-            }
-        });
+        const fontSizeInput = document.getElementById('font-size');
+        if (fontSizeInput) {
+            fontSizeInput.addEventListener('input', function(e) {
+                if (!canvas) return;
+                const size = parseInt(e.target.value);
+                const fontSizeValue = document.getElementById('font-size-value');
+                if (fontSizeValue) fontSizeValue.textContent = size + 'px';
+                const activeObject = canvas.getActiveObject();
+                if (activeObject && (activeObject.type === 'text' || activeObject.type === 'i-text')) {
+                    activeObject.set('fontSize', size);
+                    canvas.renderAll();
+                }
+            });
+        }
 
         // Update font family
         document.getElementById('font-family').addEventListener('change', function(e) {
@@ -438,32 +461,43 @@
         });
 
         // Save design
-        document.getElementById('save-design-btn').addEventListener('click', function() {
-            const designData = canvas.toJSON();
-            localStorage.setItem('merch_design_' + Date.now(), JSON.stringify(designData));
-            alert('Design saved!');
-        });
+        const saveDesignBtn = document.getElementById('save-design-btn');
+        if (saveDesignBtn) {
+            saveDesignBtn.addEventListener('click', function() {
+                if (!canvas) return;
+                const designData = canvas.toJSON();
+                localStorage.setItem('merch_design_' + Date.now(), JSON.stringify(designData));
+                alert('Design saved!');
+            });
+        }
 
         // Download design
-        document.getElementById('download-design-btn').addEventListener('click', function() {
-            const dataURL = canvas.toDataURL({
-                format: 'png',
-                quality: 1
+        const downloadDesignBtn = document.getElementById('download-design-btn');
+        if (downloadDesignBtn) {
+            downloadDesignBtn.addEventListener('click', function() {
+                if (!canvas) return;
+                const dataURL = canvas.toDataURL({
+                    format: 'png',
+                    quality: 1
+                });
+                const link = document.createElement('a');
+                link.download = 'merch-design-' + Date.now() + '.png';
+                link.href = dataURL;
+                link.click();
             });
-            const link = document.createElement('a');
-            link.download = 'merch-design-' + Date.now() + '.png';
-            link.href = dataURL;
-            link.click();
-        });
+        }
 
         // Add to cart
-        document.getElementById('add-to-cart-btn').addEventListener('click', function() {
-            if (!currentProduct || !currentVariant) {
-                alert('Please select a product and variant first');
-                return;
-            }
+        const addToCartBtn = document.getElementById('add-to-cart-btn');
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function() {
+                if (!canvas) return;
+                if (!currentProduct || !currentVariant) {
+                    alert('Please select a product and variant first');
+                    return;
+                }
 
-            const designData = canvas.toDataURL('png');
+                const designData = canvas.toDataURL('png');
             const cartItem = {
                 id: 'custom_' + Date.now(),
                 name: currentProduct.display_name || currentProduct.name,
@@ -482,7 +516,8 @@
 
             alert('Design added to cart!');
             window.location.href = 'merch.html';
-        });
+            });
+        }
 
         // Variant selection
         document.getElementById('variant-select').addEventListener('change', function() {
