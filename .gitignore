@@ -28,3 +28,11 @@ secure-downloads/
 ehthumbs.db
 Thumbs.db
 .vercel
+
+# Build artifacts
+dist/
+.vercel/output/
+*.log
+
+# Vite
+.vite/

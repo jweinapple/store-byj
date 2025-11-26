@@ -7,22 +7,34 @@
   "scripts": {
     "start": "node local-server.js",
     "dev": "nodemon local-server.js",
+    "dev:merch": "vite",
     "build": "echo 'No build step required for static site'",
+    "build:merch": "vite build",
+    "preview:merch": "vite preview",
     "deploy": "vercel --prod"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.0",
     "@supabase/supabase-js": "^2.81.1",
+    "@types/three": "^0.181.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^4.18.2",
+    "http-proxy-middleware": "^3.0.5",
     "micro": "^10.0.1",
     "node-fetch": "^2.7.0",
     "nodemailer": "^6.9.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sqlite3": "^5.1.7",
-    "stripe": "^19.1.0"
+    "stripe": "^19.1.0",
+    "three": "^0.181.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@vitejs/plugin-react": "^4.2.1",
+    "nodemon": "^3.0.1",
+    "vite": "^5.0.8"
   },
   "keywords": [
     "spotify",

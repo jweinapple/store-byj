@@ -4,6 +4,7 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import dotenv from 'dotenv';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 dotenv.config();
 
@@ -144,6 +145,22 @@ app.all('/api/printful-designer-nonce', async (req, res) => {
     await loadHandler('./api/printful-designer-nonce.js', req, res);
 });
 
+// Proxy Vite dev server requests BEFORE static file serving
+// This must come before static file serving to work correctly
+const viteProxyOptions = {
+    target: 'http://localhost:5173',
+    changeOrigin: true,
+    ws: true, // Enable websocket proxying for HMR
+    logLevel: 'silent'
+};
+
+// Proxy all Vite dev server assets FIRST (before any other routes)
+// Use app.all() to catch all HTTP methods
+app.all('/@vite*', createProxyMiddleware(viteProxyOptions));
+app.all('/@react-refresh*', createProxyMiddleware(viteProxyOptions));
+app.all('/src*', createProxyMiddleware(viteProxyOptions));
+app.all('/node_modules*', createProxyMiddleware(viteProxyOptions));
+
 // Serve printful demo page
 app.get('/printful-demo', (req, res) => {
     res.sendFile(path.join(__dirname, 'printful-demo.html'));
@@ -164,18 +181,27 @@ app.get('/designer', (req, res) => {
     res.sendFile(path.join(__dirname, 'merch-designer.html'));
 });
 
-// Serve printful demo page
-app.get('/printful-demo', (req, res) => {
-    res.sendFile(path.join(__dirname, 'printful-demo.html'));
-});
-
 // Fallback: serve index.html for root
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve static files (after specific routes)
-app.use(express.static(__dirname));
+// Serve static files (after specific routes and proxies)
+// Skip static serving for paths that should be proxied to Vite
+app.use((req, res, next) => {
+    const vitePaths = [
+        '/src',
+        '/@vite',
+        '/@react-refresh',
+        '/node_modules'
+    ];
+    
+    // Skip static serving for Vite paths - they're proxied
+    if (vitePaths.some(path => req.path.startsWith(path))) {
+        return next();
+    }
+    express.static(__dirname)(req, res, next);
+});
 
 // Start server
 app.listen(PORT, () => {

@@ -16,7 +16,7 @@
     },
     "api/stripe-webhook.js": {
       "maxDuration": 10,
-      "includeFiles": "**"
+      "includeFiles": "lib/**"
     },
     "api/stripe-publishable-key.js": {
       "maxDuration": 10

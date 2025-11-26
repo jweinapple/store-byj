@@ -44,7 +44,7 @@ Vercel Function (Server-Side)
 - Only accessible in server-side functions (serverless functions)
 - Never exposed in client bundles or network requests
 - **Mark as "Sensitive"** for extra security (makes values non-readable after creation)
-- See `VERCEL_DEPLOYMENT_SECURITY.md` for detailed setup instructions
+- See `./VERCEL_DEPLOYMENT_SECURITY.md` for detailed setup instructions
 
 ### What's Safe vs. Unsafe
 

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music - byJ.</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="images/other/DSC_4582.jpeg">
+    <link rel="apple-touch-icon" href="images/other/DSC_4582.jpeg">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background: #ffffff;
+            color: #000000;
+        }
+        
+        a {
+            color: #000000;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        
+        a:hover {
+            opacity: 0.6;
+        }
+        
+        nav a.active {
+            text-decoration: underline;
+        }
+        
+        /* Mobile Menu */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        #mobile-menu.menu-open {
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="flex items-center">
+                    <img src="images/other/byj_logo copy.png" alt="byJ." class="h-8 w-auto">
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="music.html" class="font-normal active">MUSIC</a>
+                    <a href="merch.html" class="font-normal">MERCH / SAMPLE PACKS</a>
+                    <a href="contact.html" class="font-normal">CONTACT</a>
+                    <a href="merch.html" class="font-normal">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="ml-1">0</span>
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden border-t border-gray-200">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="music.html" class="block py-2">MUSIC</a>
+                    <a href="merch.html" class="block py-2">Merch / Sample Packs</a>
+                    <a href="index.html#contact" class="block py-2">CONTACT</a>
+                    <a href="merch.html" class="block py-2">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="ml-1">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <!-- Recent Releases Section -->
+        <section class="py-8">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div id="discography-loading" class="text-center py-12">
+                    <p class="text-gray-600">Loading releases...</p>
+                </div>
+                <div id="discography-content" class="hidden">
+                    <!-- Discography content will be populated here -->
+                </div>
+                <div id="see-more-container" class="hidden text-center mt-8">
+                    <button id="see-more-btn" class="border border-black px-6 py-3 hover:bg-black hover:text-white transition-colors">
+                        See More
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Videos Section -->
+        <section class="py-20 border-t border-gray-200">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div class="mb-8">
+                    <div class="w-full" style="padding-bottom: 56.25%; position: relative;">
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/TstsLNYwR54"
+                            title="byJ. - Latest Video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="w-full" style="padding-bottom: 56.25%; position: relative;">
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/c3mUqO4Lk8w"
+                            title="byJ. - Recent Video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="w-full" style="padding-bottom: 56.25%; position: relative;">
+                        <iframe 
+                            class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.youtube.com/embed/owwpOjBa3XA"
+                            title="byJ. - Recent Video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/producedbyj/" target="_blank" class="text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://open.spotify.com/artist/0tA6AExzlXn8NLMfKNxdws?si=91Ff7vFWQMSkD2h9km0f1w" target="_blank" class="text-xl">
+                        <i class="fab fa-spotify"></i>
+                    </a>
+                    <a href="https://music.apple.com/us/artist/byj/1424774932" target="_blank" class="text-xl">
+                        <i class="fab fa-apple"></i>
+                    </a>
+                </div>
+                <div class="text-right">
+                    <p class="text-base font-semibold tracking-widest uppercase" style="color: #ff6600; letter-spacing: 0.25em; font-family: 'Helvetica Neue', 'Arial', sans-serif; font-weight: 600;">Websites byJ.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Secure Spotify API Helper Functions (Vercel Functions)
+        class SpotifyAPI {
+            constructor() {
+                this.baseURL = '/api';
+            }
+
+            async makeRequest(endpoint, params = {}) {
+                const queryString = new URLSearchParams(params).toString();
+                const url = queryString ? `${this.baseURL}${endpoint}?${queryString}` : `${this.baseURL}${endpoint}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Non-JSON response received:', text.substring(0, 100));
+                    throw new Error('API returned non-JSON response. Make sure the local server is running.');
+                }
+
+                return await response.json();
+            }
+
+            async getLatestRelease() {
+                return await this.makeRequest('/spotify-latest');
+            }
+
+            async getDiscography(limit = 6) {
+                return await this.makeRequest('/spotify-discography', { limit });
+            }
+        }
+
+        // Initialize Spotify API
+        const spotifyAPI = new SpotifyAPI();
+
+        function showLoading(elementId) {
+            const loading = document.getElementById(elementId + '-loading');
+            const content = document.getElementById(elementId + '-content');
+            if (loading) loading.classList.remove('hidden');
+            if (content) content.classList.add('hidden');
+        }
+
+        function showContent(elementId) {
+            const loading = document.getElementById(elementId + '-loading');
+            const content = document.getElementById(elementId + '-content');
+            if (loading) loading.classList.add('hidden');
+            if (content) content.classList.remove('hidden');
+        }
+
+        function createAlbumCard(album, isLatest = false, isCompact = false) {
+            const imageUrl = album.images[0]?.url || 'https://via.placeholder.com/300x300/000000/FFFFFF?text=No+Image';
+            const spotifyUrl = album.external_urls.spotify;
+            const releaseDate = new Date(album.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+            const albumType = album.album_type.charAt(0).toUpperCase() + album.album_type.slice(1);
+            
+            const hasPhysicalRelease = album.name.toLowerCase().includes('believe it or not');
+            const physicalReleaseUrl = hasPhysicalRelease ? 'https://elasticstage.com/byj/releases/believe-it-or-not-album' : null;
+
+            if (isCompact) {
+                return `
+                    <div class="group">
+                        <div class="cursor-pointer" onclick="window.open('${spotifyUrl}', '_blank')">
+                            <img 
+                                src="${imageUrl}" 
+                                alt="${album.name}" 
+                                class="w-full h-auto mb-2 hover:opacity-80 transition"
+                                loading="lazy"
+                            />
+                            <h3 class="font-bold text-sm mb-1">${album.name}</h3>
+                            <p class="text-sm text-gray-600 mb-2">${albumType} • ${releaseDate}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="group">
+                    <div class="cursor-pointer" onclick="window.open('${spotifyUrl}', '_blank')">
+                        <img 
+                            src="${imageUrl}" 
+                            alt="${album.name}" 
+                            class="w-full h-auto mb-4 hover:opacity-80 transition"
+                            loading="lazy"
+                        />
+                        <h3 class="font-bold text-lg mb-2">${album.name}</h3>
+                        <p class="text-sm text-gray-600 mb-2">${albumType} • ${releaseDate}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        let allAlbums = [];
+        let displayedCount = 6;
+        let isLoadingMore = false;
+
+        function renderAlbums(albums) {
+            const content = `
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    ${albums.map((album, index) => createAlbumCard(album, index === 0, true)).join('')}
+                </div>
+            `;
+            document.getElementById('discography-content').innerHTML = content;
+        }
+
+        async function loadDiscography(limit = 6) {
+            try {
+                if (allAlbums.length === 0) {
+                    showLoading('discography');
+                }
+                
+                // Add timeout to prevent hanging
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Request timeout')), 10000)
+                );
+                
+                const albumsData = await Promise.race([
+                    spotifyAPI.getDiscography(limit),
+                    timeoutPromise
+                ]);
+                
+                const newAlbums = albumsData.items.sort((a, b) => {
+                    const dateA = new Date(a.release_date);
+                    const dateB = new Date(b.release_date);
+                    return dateB - dateA;
+                });
+                
+                // Merge with existing albums (avoid duplicates)
+                const existingIds = new Set(allAlbums.map(a => a.id));
+                const uniqueNewAlbums = newAlbums.filter(a => !existingIds.has(a.id));
+                allAlbums = [...allAlbums, ...uniqueNewAlbums].sort((a, b) => {
+                    const dateA = new Date(a.release_date);
+                    const dateB = new Date(b.release_date);
+                    return dateB - dateA;
+                });
+                
+                displayedCount = allAlbums.length;
+                renderAlbums(allAlbums);
+                
+                // Show/hide "See More" button based on whether there are more items
+                const seeMoreContainer = document.getElementById('see-more-container');
+                if (albumsData.next || allAlbums.length < limit) {
+                    // If we got fewer items than requested, we've reached the end
+                    seeMoreContainer.classList.add('hidden');
+                } else {
+                    seeMoreContainer.classList.remove('hidden');
+                }
+                
+                showContent('discography');
+            } catch (error) {
+                console.error('Error loading discography:', error);
+                document.getElementById('discography-content').innerHTML = `
+                    <div class="text-center text-gray-600 py-8">
+                        <p>Unable to load releases. Please try again later.</p>
+                        <p class="text-sm mt-2">${error.message}</p>
+                    </div>
+                `;
+                showContent('discography');
+            }
+        }
+
+        // Handle "See More" button click
+        document.addEventListener('DOMContentLoaded', () => {
+            const seeMoreBtn = document.getElementById('see-more-btn');
+            if (seeMoreBtn) {
+                seeMoreBtn.addEventListener('click', async () => {
+                    if (isLoadingMore) return;
+                    isLoadingMore = true;
+                    seeMoreBtn.disabled = true;
+                    seeMoreBtn.textContent = 'Loading...';
+                    
+                    await loadDiscography(displayedCount + 6);
+                    
+                    isLoadingMore = false;
+                    seeMoreBtn.disabled = false;
+                    seeMoreBtn.textContent = 'See More';
+                });
+            }
+        });
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('menu-open');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mobileMenu.classList.contains('menu-open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.remove('menu-open');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+        });
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadDiscography();
+        });
+    </script>
+</body>
+</html>
