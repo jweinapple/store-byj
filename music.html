@@ -64,22 +64,24 @@
                         <span class="ml-1">0</span>
                     </a>
                 </div>
-                <!-- Mobile menu button -->
-                <button class="md:hidden" id="mobile-menu-btn">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+                <!-- Mobile: Cart and menu button -->
+                <div class="md:hidden flex items-center space-x-4">
+                    <a href="merch.html" class="font-normal">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="ml-1">0</span>
+                    </a>
+                    <button id="mobile-menu-btn">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
             
             <!-- Mobile Menu -->
             <div id="mobile-menu" class="md:hidden border-t border-gray-200">
                 <div class="px-6 py-4 space-y-4">
                     <a href="music.html" class="block py-2">MUSIC</a>
-                    <a href="merch.html" class="block py-2">Merch / Sample Packs</a>
-                    <a href="index.html#contact" class="block py-2">CONTACT</a>
-                    <a href="merch.html" class="block py-2">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="ml-1">0</span>
-                    </a>
+                    <a href="merch.html" class="block py-2">MERCH / SAMPLE PACKS</a>
+                    <a href="contact.html" class="block py-2">CONTACT</a>
                 </div>
             </div>
         </div>
@@ -98,7 +100,7 @@
                 </div>
                 <div id="see-more-container" class="hidden text-center mt-8">
                     <button id="see-more-btn" class="border border-black px-6 py-3 hover:bg-black hover:text-white transition-colors">
-                        See More
+                        Load More
                     </button>
                 </div>
             </div>
@@ -171,7 +173,13 @@
         // Secure Spotify API Helper Functions (Vercel Functions)
         class SpotifyAPI {
             constructor() {
-                this.baseURL = '/api';
+                // Use absolute URL for API if on port 8000 (Python server), otherwise use relative path
+                const currentPort = window.location.port;
+                if (currentPort === '8000') {
+                    this.baseURL = 'http://localhost:3000/api';
+                } else {
+                    this.baseURL = '/api';
+                }
             }
 
             async makeRequest(endpoint, params = {}) {
@@ -262,8 +270,9 @@
         }
 
         let allAlbums = [];
-        let displayedCount = 6;
+        let displayedCount = 0;
         let isLoadingMore = false;
+        let hasMoreAlbums = true;
 
         function renderAlbums(albums) {
             const content = `
@@ -296,7 +305,7 @@
                     return dateB - dateA;
                 });
                 
-                // Merge with existing albums (avoid duplicates)
+                // Only add new albums (avoid duplicates)
                 const existingIds = new Set(allAlbums.map(a => a.id));
                 const uniqueNewAlbums = newAlbums.filter(a => !existingIds.has(a.id));
                 allAlbums = [...allAlbums, ...uniqueNewAlbums].sort((a, b) => {
@@ -310,11 +319,11 @@
                 
                 // Show/hide "See More" button based on whether there are more items
                 const seeMoreContainer = document.getElementById('see-more-container');
-                if (albumsData.next || allAlbums.length < limit) {
-                    // If we got fewer items than requested, we've reached the end
-                    seeMoreContainer.classList.add('hidden');
-                } else {
+                hasMoreAlbums = albumsData.next && uniqueNewAlbums.length > 0;
+                if (hasMoreAlbums) {
                     seeMoreContainer.classList.remove('hidden');
+                } else {
+                    seeMoreContainer.classList.add('hidden');
                 }
                 
                 showContent('discography');
@@ -335,16 +344,17 @@
             const seeMoreBtn = document.getElementById('see-more-btn');
             if (seeMoreBtn) {
                 seeMoreBtn.addEventListener('click', async () => {
-                    if (isLoadingMore) return;
+                    if (isLoadingMore || !hasMoreAlbums) return;
                     isLoadingMore = true;
                     seeMoreBtn.disabled = true;
                     seeMoreBtn.textContent = 'Loading...';
                     
-                    await loadDiscography(displayedCount + 6);
+                    // Load next 12 albums (current count + 12)
+                    await loadDiscography(displayedCount + 12);
                     
                     isLoadingMore = false;
                     seeMoreBtn.disabled = false;
-                    seeMoreBtn.textContent = 'See More';
+                    seeMoreBtn.textContent = 'Load More';
                 });
             }
         });
